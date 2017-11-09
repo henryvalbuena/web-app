@@ -1,0 +1,21 @@
+
+<h1>Todo app</h1>
+<p><a href="/">Home</a></p>
+
+<div>
+        <div>
+            <form action="/todoapp" method="POST">
+                <input type="text" name="newTodo" placeholder="new todo"> 
+                <input type="submit" value="Add">
+            </form>
+        </div>
+        <div>
+                <% arrTodo.forEach(function(list, index){ %>
+                <form action="/todoapp/<%=index%>?_method=DELETE" method="POST">
+                    <li style="list-style-type: square"><%=list%>
+                    <input type="submit" value="delete">
+                </li>
+                </form>
+                <% }); %>
+        </div>
+</div>
