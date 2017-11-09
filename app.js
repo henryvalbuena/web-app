@@ -15,27 +15,49 @@ app.use(require("express-session")({
 }));
 app.use(bodyParser.urlencoded({extended: true}));
 
-
-var arrTodo = ["Clean the closet", "Make the bed"];
+var todoSchema = new mongoose.Schema({
+    // user: String,
+    text: String
+    
+});
+var Todos = mongoose.model('Todos', todoSchema);
 
 app.get('/', function(req, res){
     res.render('home');
 });
 
 app.get('/todoapp', function(req, res){
-    res.render('todoapp', {arrTodo});
+    Todos.find({}, function(err, arrTodo){
+        if(err){
+            console.log(err)
+        } else {
+            res.render('todoapp', {arrTodo}); 
+        }
+    })
 });
 
 app.post('/todoapp', function(req, res){
     if(req.body.newTodo){
-    arrTodo.push(req.body.newTodo);
+        var addTodo = new Todos({text: req.body.newTodo})
+        addTodo.save(addTodo, function(err, arrTodo){
+            if(err){
+                console.log(err)
+            } else {
+                res.redirect('/todoapp');
+            }
+        });
+    } else {
+        res.redirect('/todoapp');
     }
-    res.redirect('/todoapp');
 });
-app.delete('/todoapp/:index', function(req, res){
-    console.log(req.params.index);
-    arrTodo.splice(req.params.index, 1);
-    res.redirect('/todoapp');
+app.delete('/todoapp/:id', function(req, res){
+    Todos.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            console.log(err)
+        } else {
+            res.redirect('/todoapp');
+        }
+    });
 })
 
 app.listen(process.env.PORT, process.env.IP, function(){

@@ -10,9 +10,9 @@
             </form>
         </div>
         <div>
-                <% arrTodo.forEach(function(list, index){ %>
-                <form action="/todoapp/<%=index%>?_method=DELETE" method="POST">
-                    <li style="list-style-type: square"><%=list%>
+                <% arrTodo.forEach(function(todos){ %>
+                <form action="/todoapp/<%=todos._id%>?_method=DELETE" method="POST">
+                    <li style="list-style-type: square"><%=todos.text%>
                     <input type="submit" value="delete">
                 </li>
                 </form>
