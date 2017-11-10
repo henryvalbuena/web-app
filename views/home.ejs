@@ -1,4 +1,11 @@
 <h1>This is the Home Page for the apps</h1>
 <ul>
     <li><a href="/todoapp">ToDo App</a></li>
+    <% if(!currentUser){ %>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Sign up</a></li>
+    <% }else{ %>
+        <li><a>Signed In as <%=currentUser.username%></a></li>
+        <li><a href="/logout">Logout</a></li>
+    <% } %>
 </ul>

@@ -5,4 +5,6 @@
 * Add and Remove _done
 * Edit
 * Users
-* Save into mongoDB
+    >Only save to users
+    >Show only users todos
+* Save into mongoDB _done

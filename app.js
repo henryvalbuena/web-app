@@ -1,10 +1,28 @@
-var express         =       require("express"),
-    app             =       express(),
-    mongoose        =       require("mongoose"),
-    bodyParser      =       require("body-parser"),
-    methodOverride  =       require("method-override");
+var express                 =   require("express"),
+    app                     =   express(),
+    mongoose                =   require("mongoose"),
+    bodyParser              =   require("body-parser"),
+    LocalStrategy           =   require("passport-local"),
+    passport                =   require("passport"),
+    passportLocalMongoose   =   require("passport-local-mongoose"),
+    methodOverride          =   require("method-override");
+
+
+var todoSchema  = new mongoose.Schema({
+    // user: String,
+    text: String
     
+}),
+    Todos       = mongoose.model('Todos', todoSchema),
+    UserSchema  = new mongoose.Schema({
+        username: String,
+        password: String
+    });
     
+UserSchema.plugin(passportLocalMongoose); 
+var User        = mongoose.model('User', UserSchema);
+
+   
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 mongoose.connect("mongodb://localhost/todo", {useMongoClient: true});
@@ -14,16 +32,44 @@ app.use(require("express-session")({
     saveUninitialized: false
 }));
 app.use(bodyParser.urlencoded({extended: true}));
-
-var todoSchema = new mongoose.Schema({
-    // user: String,
-    text: String
-    
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
 });
-var Todos = mongoose.model('Todos', todoSchema);
 
 app.get('/', function(req, res){
     res.render('home');
+});
+
+app.get('/register', function(req, res) {
+    res.render('register');
+});
+
+app.post('/register', function(req, res) {
+    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
+       if(err){
+           console.log(err);
+       } else {
+           passport.authenticate('local')(req, res, function(){
+               res.redirect('/');
+           });
+       }
+    });
+});
+
+app.get('/login', function(req, res) {
+    res.render('login');
+});
+
+app.post('/login', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+}), function(req, res) {
 });
 
 app.get('/todoapp', function(req, res){
@@ -33,7 +79,12 @@ app.get('/todoapp', function(req, res){
         } else {
             res.render('todoapp', {arrTodo}); 
         }
-    })
+    });
+});
+
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
 });
 
 app.post('/todoapp', function(req, res){
@@ -58,7 +109,7 @@ app.delete('/todoapp/:id', function(req, res){
             res.redirect('/todoapp');
         }
     });
-})
+});
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("Server started...");
