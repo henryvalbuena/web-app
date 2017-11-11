@@ -3,8 +3,10 @@
         > todo
 * Todo app _done
 * Add and Remove _done
-* Edit
-* Users
-    >Only save to users
-    >Show only users todos
+* Edit _delayed
+* Users _done
+    >Only save to users _delayed
+    >Show only users todos _done
 * Save into mongoDB _done
+* Delete account
+* Style todo app

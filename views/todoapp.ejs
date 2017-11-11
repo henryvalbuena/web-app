@@ -7,15 +7,18 @@
             <form action="/todoapp" method="POST">
                 <input type="text" name="newTodo" placeholder="new todo"> 
                 <input type="submit" value="Add">
+                <input style="display: none" type="text" name="username" value="<%=currentUser.username %>">
             </form>
         </div>
         <div>
-                <% arrTodo.forEach(function(todos){ %>
-                <form action="/todoapp/<%=todos._id%>?_method=DELETE" method="POST">
+            <% arrTodo.forEach(function(todos){ %>
+                <% if(todos.user == currentUser.username) {%>
+                    <form action="/todoapp/<%=todos._id%>?_method=DELETE" method="POST">
                     <li style="list-style-type: square"><%=todos.text%>
                     <input type="submit" value="delete">
-                </li>
-                </form>
-                <% }); %>
+                    </li>
+                    </form>
+                <% } %>
+            <% }); %>
         </div>
 </div>

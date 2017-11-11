@@ -9,11 +9,12 @@ var express                 =   require("express"),
 
 
 var todoSchema  = new mongoose.Schema({
-    // user: String,
+    user: String,
     text: String
     
 }),
     Todos       = mongoose.model('Todos', todoSchema),
+    
     UserSchema  = new mongoose.Schema({
         username: String,
         password: String
@@ -72,24 +73,24 @@ app.post('/login', passport.authenticate('local', {
 }), function(req, res) {
 });
 
-app.get('/todoapp', function(req, res){
-    Todos.find({}, function(err, arrTodo){
-        if(err){
-            console.log(err)
-        } else {
-            res.render('todoapp', {arrTodo}); 
-        }
-    });
-});
-
 app.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
 });
 
-app.post('/todoapp', function(req, res){
+app.get('/todoapp', todoAppLoggedIn, function(req, res){
+    Todos.find({}, function(err, arrTodo){
+        if(err){
+            console.log(err)
+        } else {
+            res.render('todoapp', {arrTodo});
+        }
+    });
+});
+
+app.post('/todoapp', todoAppLoggedIn, function(req, res){
     if(req.body.newTodo){
-        var addTodo = new Todos({text: req.body.newTodo})
+        var addTodo = new Todos({text: req.body.newTodo, user: req.body.username})
         addTodo.save(addTodo, function(err, arrTodo){
             if(err){
                 console.log(err)
@@ -110,6 +111,14 @@ app.delete('/todoapp/:id', function(req, res){
         }
     });
 });
+
+function todoAppLoggedIn (req, res, next){
+    if(req.isAuthenticated()){
+        next();
+    } else {
+        res.redirect('/login');
+    }
+}
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("Server started...");
