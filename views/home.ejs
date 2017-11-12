@@ -1,11 +1,17 @@
-<h1>This is the Home Page for the apps</h1>
-<ul>
-    <li><a href="/todoapp">ToDo App</a></li>
-    <% if(!currentUser){ %>
-        <li><a href="/login">Login</a></li>
-        <li><a href="/register">Sign up</a></li>
-    <% }else{ %>
-        <li><a>Signed In as <%=currentUser.username%></a></li>
-        <li><a href="/logout">Logout</a></li>
-    <% } %>
-</ul>
+<% include ../partials/header %>
+
+<h1 class="ui header">
+    <img src="/images/clockwork-icon.png" class="ui image">
+    DevRoy Apps
+</h1>
+<div class="ui middle aligned selection list">
+  <div class="item">
+    <div class="content">
+      <div class="header"><a class="ui black label" href="/todoapp"><i class="write square icon"></i>Todo App</a></div>
+    </div>
+  <div class="item">
+    <div class="content">
+      <div class="header"><a class="ui black label" href="/"><i class="puzzle icon"></i>Another App</a></div>
+    </div>
+</div>
+<% include ../partials/footer %>

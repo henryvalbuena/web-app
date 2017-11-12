@@ -23,7 +23,7 @@ var todoSchema  = new mongoose.Schema({
 UserSchema.plugin(passportLocalMongoose); 
 var User        = mongoose.model('User', UserSchema);
 
-   
+app.use(express.static(__dirname + "/public"));   
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 mongoose.connect("mongodb://localhost/todo", {useMongoClient: true});
@@ -102,7 +102,7 @@ app.post('/todoapp', todoAppLoggedIn, function(req, res){
         res.redirect('/todoapp');
     }
 });
-app.delete('/todoapp/:id', function(req, res){
+app.delete('/todoapp/:id', todoAppLoggedIn, function(req, res){
     Todos.findByIdAndRemove(req.params.id, function(err){
         if(err){
             console.log(err)

@@ -1,0 +1,32 @@
+body{
+    background-color: #3d72a0;
+}
+.container{
+    margin-top: 100px;
+}
+h1.ui.header{
+    font-size: 4em;
+    margin-bottom: 50px;
+}
+div .item img{
+    background-color: #3d72a0;
+}
+i._head{
+    font-size: 2em;
+}
+div.header a.ui.black.label{
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+#user-todoapp{
+    display:none;
+}
+.ui.red.button{
+   width: 24px;
+   padding: 5px;
+   margin: 0;
+   font-size: 1.2em;
+}
+.todo-form{
+    margin: 10px 0;
+}

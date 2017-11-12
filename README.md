@@ -8,5 +8,6 @@
     >Only save to users _delayed
     >Show only users todos _done
 * Save into mongoDB _done
+* Add check mark done to items
 * Delete account
 * Style todo app
