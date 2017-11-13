@@ -18,8 +18,8 @@
                   <a class="item ui black label" href="/login"><i class="sign in icon _head"></i> Login</a>
                   <a class="item ui green label" href="/register"><i class="add user icon _head"></i> Sign-in</a>
                   <% }else{ %>
-                  <a class="item ui green label"><i class="star icon _head"></i> Signed In as <%=currentUser.username%></a>
                   <a class="item ui black label" href="/logout"><i class="sign out icon _head"></i> Logout</a>
+                  <a class="item ui green label"><i class="star icon _head"></i>Hi <%=currentUser.username%></a>
                   <% } %>
               </div>
         </div>
