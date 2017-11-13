@@ -52,15 +52,19 @@ app.get('/register', function(req, res) {
 });
 
 app.post('/register', function(req, res) {
-    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
-       if(err){
-           console.log(err);
-       } else {
-           passport.authenticate('local')(req, res, function(){
-               res.redirect('/');
-           });
-       }
-    });
+    if(req.body.username && req.body.password){
+        User.register(new User({username: req.body.username}), req.body.password, function(err, user){
+           if(err){
+               console.log(err);
+           } else {
+               passport.authenticate('local')(req, res, function(){
+                   res.redirect('/');
+               });
+           }
+        });
+    } else{
+        res.redirect('/register');
+    }
 });
 
 app.get('/login', function(req, res) {

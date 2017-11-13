@@ -1,15 +1,17 @@
 body{
-    background-color: #3d72a0;
+    background-color: #1B1C1D;
 }
 .container{
-    margin-top: 100px;
+    padding-top: 100px;
+    background-color: white;
+    height: 100%;
 }
 h1.ui.header{
     font-size: 4em;
     margin-bottom: 50px;
 }
 div .item img{
-    background-color: #3d72a0;
+    background-color: white;
 }
 i._head{
     font-size: 2em;
@@ -21,12 +23,17 @@ div.header a.ui.black.label{
 #user-todoapp{
     display:none;
 }
-.ui.red.button{
+.ui.red.button.delete-b{
    width: 24px;
    padding: 5px;
    margin: 0;
    font-size: 1.2em;
+   display: none;
 }
 .todo-form{
     margin: 10px 0;
+}
+.content-container{
+    width: 80%;
+    margin: 0 auto;
 }

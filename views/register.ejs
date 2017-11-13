@@ -1,12 +1,24 @@
 <% include ../partials/header %>
-<h1>Register page</h1>
+<h1>Register</h1>
 
-<div>
-    <form action="/register" method="POST">
-        <input type="text" name="username" placeholder="username">
-        <input type="password" name="password" placeholder="password">
-        <input type="submit" value="Register">
+    <form class="ui form attached fluid segment" action="/register" method="POST">
+        <div class="ui big form">
+          <div class="two fields">
+            <div class="field">
+              <label>Username</label>
+              <input name="username" placeholder="Username" type="text">
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <input name="password" placeholder="Password" type="password">
+            </div>
+          </div>
+          <button class="ui green submit huge button">Register</button>
+        </div>
     </form>
-    <a href="/">Back</a>
-</div>
+    <div class="ui bottom attached warning message">
+      <i class="sign in icon"></i>
+      Already signed up? <a href="#">Login here</a> instead.
+    </div>
+    
 <% include ../partials/footer %>

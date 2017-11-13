@@ -10,6 +10,7 @@
           <input placeholder="New Todo" type="text" name="newTodo">
       </div>
           <button class="ui green submit button">Add</button>
+          <div class="ui red submit button show-d">Delete</div>
     </div>
     <input id="user-todoapp" type="text" name="username" value="<%=currentUser.username %>">
 </form>
@@ -20,10 +21,11 @@
                     <form class="todo-form" action="/todoapp/<%=todos._id%>?_method=DELETE" method="POST">
                         <div class="ui middle aligned divided list">  
                           <div class="item">
-                              <div class="right floated content">
-                                  <button class="ui red button"><i class="trash icon"></i></button>
+                              <div class="content"><%=todos.text%>
+                                  <div class="right floated content">
+                                      <button class="ui red button delete-b"><i class="trash icon"></i></button>
+                                  </div>
                               </div>
-                              <div class="content"><%=todos.text%></div>
                           </div>
                         </div>
                     </form>
