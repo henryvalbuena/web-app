@@ -2,7 +2,7 @@ body{
     background-color: #1B1C1D;
 }
 .container{
-    padding-top: 100px;
+    padding-top: 60px;
     background-color: white;
     height: 100%;
 }
@@ -33,7 +33,9 @@ div.header a.ui.black.label{
 .todo-form{
     margin: 10px 0;
 }
-.content-container{
-    width: 80%;
-    margin: 0 auto;
+div.ui.top.menu.inverted{
+    margin: 0;
+}
+.none-menu{
+   display: none; 
 }

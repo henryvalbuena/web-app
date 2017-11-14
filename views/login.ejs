@@ -1,24 +1,26 @@
 <% include ../partials/header %>
-<h1>Login</h1>
-
-    <form class="ui form attached fluid segment" action="/login" method="POST">
-        <div class="ui big form">
-          <div class="two fields">
-            <div class="field">
-              <label>Username</label>
-              <input name="username" placeholder="Username" type="text">
-            </div>
-            <div class="field">
-              <label>Password</label>
-              <input name="password" placeholder="Password" type="password">
-            </div>
-          </div>
-          <button class="ui black submit huge button">Login</button>
-        </div>
-    </form>
-    <div class="ui bottom attached warning message">
-      <i class="add user icon"></i>
-      New member? <a href="/register">Sign-in here</a>
-    </div>
+<div class="ui text container">
     
+    <h1>Login</h1>
+    
+        <form class="ui form attached fluid segment" action="/login" method="POST">
+            <div class="ui big form">
+              <div class="two fields">
+                <div class="field">
+                  <label>Username</label>
+                  <input name="username" placeholder="Username" type="text">
+                </div>
+                <div class="field">
+                  <label>Password</label>
+                  <input name="password" placeholder="Password" type="password">
+                </div>
+              </div>
+              <button class="ui black submit huge button">Login</button>
+            </div>
+        </form>
+        <div class="ui bottom attached warning message">
+          <i class="add user icon"></i>
+          New member? <a href="/register">Sign-in here</a>
+        </div>
+ </div> 
 <% include ../partials/footer %>

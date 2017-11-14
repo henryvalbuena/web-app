@@ -1,35 +1,38 @@
 <% include ../partials/header %>
-<h1 class="ui header">
-    <i class="write square icon"></i>
-    ToDo App
-</h1>
-<form action="/todoapp" method="POST">
-    <div class="ui big form">
-      <div class="field">
-          <label>Add New Todo</label>
-          <input placeholder="New Todo" type="text" name="newTodo">
-      </div>
-          <button class="ui green submit button">Add</button>
-          <div class="ui red submit button show-d">Delete</div>
-    </div>
-    <input id="user-todoapp" type="text" name="username" value="<%=currentUser.username %>">
-</form>
 
-    <div class="ui segment">                        
-            <% arrTodo.forEach(function(todos){ %>
-                <% if(todos.user == currentUser.username) {%>
-                    <form class="todo-form" action="/todoapp/<%=todos._id%>?_method=DELETE" method="POST">
-                        <div class="ui middle aligned divided list">  
-                          <div class="item">
-                              <div class="content"><%=todos.text%>
-                                  <div class="right floated content">
-                                      <button class="ui red button delete-b"><i class="trash icon"></i></button>
+<div class="ui text container">
+    <h1 class="ui header">
+        <i class="write square icon"></i>
+        ToDo App
+    </h1>
+    <form action="/todoapp" method="POST">
+        <div class="ui big form">
+          <div class="field">
+              <label>Add New Todo</label>
+              <input placeholder="New Todo" type="text" name="newTodo">
+          </div>
+              <button class="ui green submit button">Add</button>
+              <div class="ui red submit button show-d">Delete</div>
+        </div>
+        <input id="user-todoapp" type="text" name="username" value="<%=currentUser.username %>">
+    </form>
+    
+        <div class="ui segment">                        
+                <% arrTodo.forEach(function(todos){ %>
+                    <% if(todos.user == currentUser.username) {%>
+                        <form class="todo-form" action="/todoapp/<%=todos._id%>?_method=DELETE" method="POST">
+                            <div class="ui middle aligned divided list">  
+                              <div class="item">
+                                  <div class="content"><%=todos.text%>
+                                      <div class="right floated content">
+                                          <button class="ui red button delete-b"><i class="trash icon"></i></button>
+                                      </div>
                                   </div>
                               </div>
-                          </div>
-                        </div>
-                    </form>
-                <% } %>
-            <% }); %>
-    </div>
+                            </div>
+                        </form>
+                    <% } %>
+                <% }); %>
+        </div>
+</div>
 <% include ../partials/footer %>
