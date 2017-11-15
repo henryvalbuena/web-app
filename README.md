@@ -11,3 +11,8 @@
 * Add check boxes to edit or delete _pending
 * Delete account _pending
 * Style todo app _inprogress
+* Add reminder via email
+* Correct menu bug
+  >display: none both;
+*Form validation
+*Repeat password
