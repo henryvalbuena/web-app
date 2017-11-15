@@ -11,28 +11,36 @@
               <label>Add New Todo</label>
               <input placeholder="New Todo" type="text" name="newTodo">
           </div>
-              <button class="ui green submit button">Add</button>
-              <div class="ui red submit button show-d">Delete</div>
+                <div class="ui right aligned container">
+                  <button class="ui green submit button">Add</button>
+                </div>
         </div>
         <input id="user-todoapp" type="text" name="username" value="<%=currentUser.username %>">
     </form>
-    
-        <div class="ui segment">                        
-                <% arrTodo.forEach(function(todos){ %>
-                    <% if(todos.user == currentUser.username) {%>
-                        <form class="todo-form" action="/todoapp/<%=todos._id%>?_method=DELETE" method="POST">
-                            <div class="ui middle aligned divided list">  
-                              <div class="item">
-                                  <div class="content"><%=todos.text%>
-                                      <div class="right floated content">
-                                          <button class="ui red button delete-b"><i class="trash icon"></i></button>
-                                      </div>
-                                  </div>
-                              </div>
-                            </div>
-                        </form>
-                    <% } %>
+        
+        <!--TODO FORM V1.1-->
+        
+    <div class="ui left aligned container">
+        <div class="ui big comments">
+          <div class="comment">
+            <div class="content">
+              <% arrTodo.forEach(function(todos){ %>
+              <% if(todos.user == currentUser.username) {%>
+                    <form class="todo-form" action="/todoapp/<%=todos._id%>?_method=DELETE" method="POST">
+                      <div class="text">
+                          <%=todos.text%>
+                      </div>
+                      <div class="actions">
+                        <span>Delete</span>
+                        <button type="submit"><i class="trash icon"></i></button>
+                      </div>
+                     </form>
+                  <% } %>
                 <% }); %>
+            </div>
+          </div>
         </div>
-</div>
+    </div>
+</div> 
+
 <% include ../partials/footer %>
