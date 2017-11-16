@@ -52,19 +52,15 @@ app.get('/register', function(req, res) {
 });
 
 app.post('/register', function(req, res) {
-    if(req.body.username && req.body.password){
-        User.register(new User({username: req.body.username}), req.body.password, function(err, user){
-           if(err){
-               console.log(err);
-           } else {
-               passport.authenticate('local')(req, res, function(){
-                   res.redirect('/');
-               });
-           }
-        });
-    } else{
-        res.redirect('/register');
-    }
+    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
+       if(err){
+           console.log(err);
+       } else {
+           passport.authenticate('local')(req, res, function(){
+               res.redirect('/');
+           });
+       }
+    });
 });
 
 app.get('/login', function(req, res) {
@@ -94,7 +90,7 @@ app.get('/todoapp', todoAppLoggedIn, function(req, res){
 
 app.post('/todoapp', todoAppLoggedIn, function(req, res){
     if(req.body.newTodo){
-        var addTodo = new Todos({text: req.body.newTodo, user: req.body.username})
+        var addTodo = new Todos({text: req.body.newTodo, user: req.user.username})
         addTodo.save(addTodo, function(err, arrTodo){
             if(err){
                 console.log(err)

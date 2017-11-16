@@ -1,10 +1,10 @@
 <% include ../partials/header %>
-<div class="ui text container">
-    <h1>Register</h1>
+
+<div class="log-box">
+    <!--<h3 class="ui header inverted">Sing-in</h3>-->
 
     <form class="ui form attached fluid segment" action="/register" method="POST">
         <div class="ui big form">
-          <div class="two fields">
             <div class="field">
               <label>Username</label>
               <input name="username" placeholder="Username" type="text">
@@ -13,13 +13,17 @@
               <label>Password</label>
               <input name="password" placeholder="Password" type="password">
             </div>
-          </div>
-          <button class="ui green submit huge button">Register</button>
+            <div class="field">
+              <label>Repeat Password</label>
+              <input name="match" placeholder="Repeat Password" type="password">
+            </div>
+          <button class="ui green submit huge fluid button">Sign Up</button>
         </div>
+        <div class="ui error message"><ul class="list"><li>Hello moto</li></ul></div>
     </form>
     <div class="ui bottom attached warning message">
-      <i class="sign in icon"></i>
-      Already signed up? <a href="/login">Login here</a> instead.
+          <i class="sign in icon"></i>
+          Already signed up? <a href="/login">Login here</a> instead.
     </div>
 </div>
 <% include ../partials/footer %>

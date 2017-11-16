@@ -1,11 +1,10 @@
 <% include ../partials/header %>
-<div class="ui text container">
-    
-    <h1>Login</h1>
+
+<div class="log-box">
+    <!--<h3 class="ui header inverted">Login</h3>-->
     
         <form class="ui form attached fluid segment" action="/login" method="POST">
             <div class="ui big form">
-              <div class="two fields">
                 <div class="field">
                   <label>Username</label>
                   <input name="username" placeholder="Username" type="text">
@@ -14,10 +13,11 @@
                   <label>Password</label>
                   <input name="password" placeholder="Password" type="password">
                 </div>
-              </div>
-              <button class="ui black submit huge button">Login</button>
+              <button class="ui black submit huge fluid button">Login</button>
             </div>
+            <div class="ui error message"><ul class="list"><li></li></ul></div>
         </form>
+        
         <div class="ui bottom attached warning message">
           <i class="add user icon"></i>
           New member? <a href="/register">Sign-in here</a>
