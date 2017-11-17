@@ -1,26 +1,30 @@
 
 Herro! this is my app website.
-* Home page https://henryvalbuena.herokuapp.com
 
 Work in progres
-* Edit
-* Add check boxes to mark done
+* Edit todos
+* Mark done
 * Delete account
 * User page >reset password >change username >email address
 * Add reminder via email
+* About
 
 
-Work mostly done (need to fix somethings)
+Work mostly done (need to improve)
 * Todo app 
-* Add and Remove 
 * Users 
     >Only save to users 
     >Show only users todos 
-* Save into mongoDB / mLab 
 * Style todo app
-  >display: none both; 
-> Form validation 
-> Repeat password 
+* Correct menu bug
+
+Complete
+* Form validation 
+* Repeat password
+* Display: none both
+* Save into mongoDB / mLab 
+* Add and Remove
 
 Debuggin
-* Correct menu bug
+*none
+
