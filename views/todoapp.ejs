@@ -3,7 +3,7 @@
     <div class="ui text container">
         <h1 class="ui header">
             <i class="write square icon"></i>
-            ToDo App
+            Simple ToDo
         </h1>
         <form action="/todoapp" method="POST">
             <div class="ui big form">
@@ -20,10 +20,11 @@
             <div class="ui big comments">
               <div class="comment">
                 <div class="content">
-                  <% arrTodo.forEach(function(todos){ %>
-                  <% if(todos.user == currentUser.username) {%>
-                        <form class="todo-form" action="/todoapp/<%=todos._id%>?_method=DELETE" method="POST">
-                          <div class="text"><%=todos.text%></div>
+                  
+                  <% for (var i=arrTodo.length-1; i>=0; i--){%>
+                  <% if(arrTodo[i].user == currentUser.username) {%>
+                        <form class="todo-form" action="/todoapp/<%=arrTodo[i]._id%>?_method=DELETE" method="POST">
+                          <div class="text done-check"><%=arrTodo[i].text%></div>
                           <div class="actions">
                             <span>Options:</span>
                             <button class="delete-todo" type="submit">
@@ -31,12 +32,14 @@
                             </button>
                           </div>
                          </form>
-                      <% } %>
-                    <% }); %>
+                    <% } %>
+                    <% } %>
                 </div>
               </div>
             </div>
         </div>
     </div> 
 </div>
+
+
 <% include ../partials/footer %>

@@ -6,6 +6,7 @@ body{
     background-color: white;
     padding-bottom: 80px;
     margin-top: 100px;
+    border-radius: 5px;
 }
 h1.ui.header{
     font-size: 4em;
@@ -31,8 +32,8 @@ div.header a.ui.black.label{
 .todo-form{
     margin: 10px 0;
 }
-div.ui.top.menu.inverted{
-    margin: 0;
+.ui.fluid.input{
+    margin-bottom: 40px;
 }
 .none-menu{
    display: none; 
@@ -45,6 +46,7 @@ div.ui.top.menu.inverted{
     background-color: white;
     border: none;
     color: gray;
+    padding: 0;
 }
 .actions button:hover{
     color: black;
@@ -53,6 +55,7 @@ div.ui.top.menu.inverted{
     text-align: center;
 }
 form.ui.form.attached.fluid.segment{
+    border-radius: .28571429rem .28571429rem 0 0;
     margin-top: 100px;
 }
 .log-box{
@@ -63,4 +66,7 @@ form.ui.form.attached.fluid.segment{
     background-color: none;
     border: none;
     padding: 0;
+}
+.init-menu-class{
+    display: none;
 }

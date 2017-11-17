@@ -1,10 +1,10 @@
 function checkOnStart() {
+    $( "#mobile-m" ).removeClass().addClass('init-menu-class');
+    $( "#desktop-m" ).removeClass().addClass('init-menu-class');
     if( $( window ).width() <= 768){
-      $( "#desktop-m" ).hide(); 
-      $( "#mobile-m" ).show(); 
+      $( "#mobile-m" ).removeClass().addClass('ui top fixed menu tiny inverted');
     } else if($( window ).width() >= 768){
-      $( "#mobile-m" ).hide();
-      $( "#desktop-m" ).show();
+      $( "#desktop-m" ).removeClass().addClass('ui top fixed menu tiny inverted');
     }
 }
 
