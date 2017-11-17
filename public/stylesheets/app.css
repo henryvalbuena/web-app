@@ -54,7 +54,7 @@ div.header a.ui.black.label{
 .warning.message, div h1{
     text-align: center;
 }
-form.ui.form.attached.fluid.segment{
+form.ui.form.attached.segment{
     border-radius: .28571429rem .28571429rem 0 0;
     margin-top: 100px;
 }
@@ -69,4 +69,8 @@ form.ui.form.attached.fluid.segment{
 }
 .init-menu-class{
     display: none;
+}
+.ui.positive.message, .ui.negative.message{
+    margin-top: 70px;
+    text-align: center;
 }

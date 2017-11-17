@@ -14,12 +14,11 @@
         <meta name="theme-color" content="#ffffff">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css" rel="stylesheet">
         <link rel="stylesheet" href="/stylesheets/app.css">
-        <link rel="preload" type="image/jpeg" href="/images/clockwork-icon.png">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
         </head>
         
         <body>
-      
+        
     <!--MOBILE MENU BAR -->
     
     <div id="mobile-m" class="init-menu-class">
@@ -58,4 +57,18 @@
               <a class="item ui green label"><i class="star icon _head"></i>Hi <%=currentUser.username%></a>
               <% } %>
           </div>
+    </div>
+    
+    <div class="ui container">
+      <% if(error && error.length > 0){ %>
+      <div class="ui negative message">
+        <i class="close icon"></i>
+        <div class="header"><%= error%></div>
+      </div>
+      <% } else if (success && success.length > 0){ %>
+      <div class="ui positive message">
+        <i class="close icon"></i>
+        <div class="header"><%= success%></div>
+      </div>
+      <% } %>
     </div>

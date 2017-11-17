@@ -6,6 +6,7 @@ var express                 =   require("express"),
     passport                =   require("passport"),
     passportLocalMongoose   =   require("passport-local-mongoose"),
     dotenv                  =   require('dotenv').config(),
+    flash                   =   require("connect-flash"),
     methodOverride          =   require("method-override");
 
 
@@ -26,6 +27,8 @@ var todoSchema  = new mongoose.Schema({
 UserSchema.plugin(passportLocalMongoose); 
 var User        = mongoose.model('User', UserSchema);
 
+
+app.use(flash());
 app.use(express.static(__dirname + "/public"));   
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
@@ -42,7 +45,9 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use(function(req, res, next){
-    res.locals.currentUser = req.user;
+    res.locals.currentUser  = req.user;
+    res.locals.error        = req.flash('error');
+    res.locals.success      = req.flash('success');
     next();
 });
 
@@ -61,6 +66,7 @@ app.post('/register', function(req, res) {
            console.log(err);
        } else {
            passport.authenticate('local')(req, res, function(){
+               req.flash('success', "Welcome " + req.body.username);
                res.redirect('/');
            });
        }
@@ -79,6 +85,7 @@ app.post('/login', passport.authenticate('local', {
 
 app.get('/logout', function(req, res) {
     req.logout();
+    req.flash('success', "Hope to see you again soon!");
     res.redirect('/');
 });
 
@@ -99,6 +106,7 @@ app.post('/todoapp', todoAppLoggedIn, function(req, res){
             if(err){
                 console.log(err)
             } else {
+                req.flash('success', "New Todo Added");
                 res.redirect('/todoapp');
             }
         });
@@ -111,6 +119,7 @@ app.delete('/todoapp/:id', todoAppLoggedIn, function(req, res){
         if(err){
             console.log(err)
         } else {
+            req.flash('success', "Todo deleted");
             res.redirect('/todoapp');
         }
     });
@@ -120,6 +129,7 @@ function todoAppLoggedIn (req, res, next){
     if(req.isAuthenticated()){
         next();
     } else {
+        req.flash('error', "You need to log in first");
         res.redirect('/login');
     }
 }

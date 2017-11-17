@@ -1,9 +1,9 @@
 function checkOnStart() {
     $( "#mobile-m" ).removeClass().addClass('init-menu-class');
     $( "#desktop-m" ).removeClass().addClass('init-menu-class');
-    if( $( window ).width() <= 768){
+    if( $( window ).width() <= 414){
       $( "#mobile-m" ).removeClass().addClass('ui top fixed menu tiny inverted');
-    } else if($( window ).width() >= 768){
+    } else if($( window ).width() >= 414){
       $( "#desktop-m" ).removeClass().addClass('ui top fixed menu tiny inverted');
     }
 }
@@ -18,8 +18,15 @@ $('.ui.dropdown.icon.item')
 $( window ).resize(function() {
   checkOnStart();
 });
+ 
+$('.delete-todo').popup({
+  html: "<a class='ui red tag label'>Delete</a>",
+  position: 'right center',
+  variation: 'basic',
+  inline: true
+});
 
-$('.ui.form')
+$('.ui.big.form')
   .form({
       on:'blur',
     fields: {
@@ -51,15 +58,20 @@ $('.ui.form')
           {
             type   : 'match[password]',
             prompt : 'Password does not match'
-          }
+          },
+          {
+            type   : 'empty',
+            prompt : 'Please enter a valid password'
+          },
         ]
       }
     }
  });
- 
-$('.delete-todo').popup({
-  html: "<a class='ui red tag label'>Delete</a>",
-  position: 'right center',
-  variation: 'basic',
-  inline: true
-});
+ $('.ui.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+;
