@@ -40,7 +40,7 @@ $('.ui.form')
             prompt : 'Please enter a valid password'
           },
           {
-            type   : 'minLength[3]',
+            type   : 'minLength[6]',
             prompt : 'Your password must be at least {ruleValue} characters'
           }
         ]

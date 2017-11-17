@@ -26,7 +26,9 @@ var User        = mongoose.model('User', UserSchema);
 app.use(express.static(__dirname + "/public"));   
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
-mongoose.connect("mongodb://localhost/todo", {useMongoClient: true});
+// mongodb://<dbuser>:<dbpassword>@ds111496.mlab.com:11496/henrywebdb
+// mongodb://localhost/todo
+mongoose.connect("mongodb://roy:H5678!@ds111496.mlab.com:11496/henrywebdb", {useMongoClient: true});
 app.use(require("express-session")({
     secret: '12345qwert',
     resave: false,
