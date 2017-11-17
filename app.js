@@ -5,7 +5,10 @@ var express                 =   require("express"),
     LocalStrategy           =   require("passport-local"),
     passport                =   require("passport"),
     passportLocalMongoose   =   require("passport-local-mongoose"),
+    dotenv                  =   require('dotenv').config(),
     methodOverride          =   require("method-override");
+
+
 
 
 var todoSchema  = new mongoose.Schema({
@@ -26,9 +29,7 @@ var User        = mongoose.model('User', UserSchema);
 app.use(express.static(__dirname + "/public"));   
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
-// mongodb://<dbuser>:<dbpassword>@ds111496.mlab.com:11496/henrywebdb
-// mongodb://localhost/todo
-mongoose.connect("mongodb://roy:H5678!@ds111496.mlab.com:11496/henrywebdb", {useMongoClient: true});
+mongoose.connect(process.env.DB_URL, {useMongoClient: true});
 app.use(require("express-session")({
     secret: '12345qwert',
     resave: false,
@@ -44,6 +45,7 @@ app.use(function(req, res, next){
     res.locals.currentUser = req.user;
     next();
 });
+
 
 app.get('/', function(req, res){
     res.render('home');
