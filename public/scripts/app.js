@@ -85,3 +85,16 @@ $('.negative.floating.message')
 $('#multi-select')
   .dropdown()
 ;
+var i = 0;
+$('div.content span:nth-child(1)').on('click', function(){
+   $('#toggleHide').toggleClass('hide-edit');
+   if(i==0){
+     $('#change-grid').removeClass('ui one column stackable grid');
+     $('#change-grid').addClass('ui two column stackable grid');
+    i++;
+   } else {
+    $('#change-grid').removeClass('ui two column stackable grid');
+    $('#change-grid').addClass('ui one column stackable grid');
+    i=0;
+   }
+});

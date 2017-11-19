@@ -1,7 +1,7 @@
 body{
     background-color: #1B1C1D;
 }
-.init-menu-class, .hidUserProfile, #after-edit{
+.init-menu-class, .hidUserProfile, .hide-edit{
     display: none;
 }
 .main.ui.container{
