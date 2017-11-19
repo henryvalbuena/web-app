@@ -13,8 +13,8 @@ var express                 =   require("express"),
 
 
 var todoSchema  = new mongoose.Schema({
-    user: String,
-    text: String
+        user: String,
+        text: String
     
 }),
     Todos       = mongoose.model('Todos', todoSchema),
@@ -22,12 +22,24 @@ var todoSchema  = new mongoose.Schema({
     UserSchema  = new mongoose.Schema({
         username: String,
         password: String
-    });
+    }),
+    ProfileSchema= new mongoose.Schema({
+        user: {
+        id:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    },
+        about: String,
+        favorite: String
+    }),
+    Profile     = mongoose.model('Profile', ProfileSchema);
     
 UserSchema.plugin(passportLocalMongoose); 
 var User        = mongoose.model('User', UserSchema);
 
-
+// console.log(User);
 app.use(flash());
 app.use(express.static(__dirname + "/public"));   
 app.set("view engine", "ejs");
@@ -48,6 +60,7 @@ app.use(function(req, res, next){
     res.locals.currentUser  = req.user;
     res.locals.error        = req.flash('error');
     res.locals.success      = req.flash('success');
+    res.locals.details      = req.flash('details');
     next();
 });
 
@@ -63,12 +76,13 @@ app.get('/register', function(req, res) {
 app.post('/register', function(req, res) {
     User.register(new User({username: req.body.username}), req.body.password, function(err, user){
        if(err){
-           console.log(err);
+           req.flash('error', err.message);
+           res.redirect('/register');       
        } else {
-           passport.authenticate('local')(req, res, function(){
-               req.flash('success', "Welcome " + req.body.username);
-               res.redirect('/');
-           });
+        passport.authenticate('local')(req, res, function(){
+        req.flash('success', "Welcome " + req.body.username);
+        res.redirect('/');
+        });
        }
     });
 });
@@ -79,19 +93,65 @@ app.get('/login', function(req, res) {
 
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/login'
-}), function(req, res) {
-});
+    failureRedirect: '/login',
+    failureFlash: 'Please check your username or password and try again'
+}));
 
 app.get('/logout', function(req, res) {
     req.logout();
-    req.flash('success', "Hope to see you again soon!");
+    req.flash('success', "Hope to see you soon again!");
     res.redirect('/');
+});
+
+app.get('/userprofile/:id', todoAppLoggedIn, function(req, res) {
+    Profile.find({}, function(err, profile){
+        if(err){
+            req.flash('error', err.message);
+            res.redirect('/userprofile/'+req.use._id);
+        } else {
+            res.render('userprofile', {profile});
+        }
+    });
+});
+
+app.post('/userprofile/:id', todoAppLoggedIn, function(req, res) {
+    var user = {
+        id: req.user._id,
+        username: req.user.username
+    },
+        about       = req.body.about,
+        favorite    = req.body.favorite,
+        userProfile =  {user: user, about: about, favorite: favorite};
+        Profile.create(userProfile, function(err, userPro){
+            if(err){
+            req.flash('error', err.message);
+            res.redirect('/userprofile/'+req.user._id);
+            } else {
+                req.flash('success', "Profile updated");
+                res.redirect('/userprofile/'+req.user._id);
+            }
+        });
+});
+
+app.put('/userprofile/:id', todoAppLoggedIn, function(req, res){
+    if(!req.body.userdata.favorite || (req.body.userdata.favorite == "None")){
+        req.body.userdata.favorite = "";
+    }
+    Profile.findByIdAndUpdate(req.body.profileId, req.body.userdata, function(err, update){
+        if(err){
+            req.flash('error', err.message);
+            res.redirect('/userprofile/'+req.user._id);
+        } else {
+            res.redirect('/userprofile/'+req.user._id);
+        }
+    });
 });
 
 app.get('/todoapp', todoAppLoggedIn, function(req, res){
     Todos.find({}, function(err, arrTodo){
         if(err){
+            req.flash('error', err.message);
+            res.redirect('/todoapp');
             console.log(err)
         } else {
             res.render('todoapp', {arrTodo});
@@ -101,12 +161,12 @@ app.get('/todoapp', todoAppLoggedIn, function(req, res){
 
 app.post('/todoapp', todoAppLoggedIn, function(req, res){
     if(req.body.newTodo){
-        var addTodo = new Todos({text: req.body.newTodo, user: req.user.username})
+        var addTodo = new Todos({text: req.body.newTodo, user: req.user.username});
         addTodo.save(addTodo, function(err, arrTodo){
             if(err){
-                console.log(err)
+            req.flash('error', err.message);
+            res.redirect('/todoapp');
             } else {
-                req.flash('success', "New Todo Added");
                 res.redirect('/todoapp');
             }
         });
@@ -114,22 +174,33 @@ app.post('/todoapp', todoAppLoggedIn, function(req, res){
         res.redirect('/todoapp');
     }
 });
+
 app.delete('/todoapp/:id', todoAppLoggedIn, function(req, res){
     Todos.findByIdAndRemove(req.params.id, function(err){
         if(err){
-            console.log(err)
+            req.flash('error', err.message);
+            res.redirect('/todoapp/:id');
         } else {
-            req.flash('success', "Todo deleted");
             res.redirect('/todoapp');
         }
     });
+});
+
+app.get('/another', function(req, res) {
+    res.send("In Development % Beep Beep Pop Pop %");
+});
+
+// DEFAULT ROUTE
+app.get('*', function(req, res) {
+    res.send('404 Not Found');
 });
 
 function todoAppLoggedIn (req, res, next){
     if(req.isAuthenticated()){
         next();
     } else {
-        req.flash('error', "You need to log in first");
+        req.flash('error', "Please login first");
+        req.flash('details', "Use you account to login or If you are new create an account");
         res.redirect('/login');
     }
 }

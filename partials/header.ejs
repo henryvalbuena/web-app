@@ -19,56 +19,65 @@
         
         <body>
         
-    <!--MOBILE MENU BAR -->
+        <!--MOBILE MENU BAR v1.1-->
     
     <div id="mobile-m" class="init-menu-class">
-      <div class="ui dropdown icon item">
-        <img id="logo-i" src="/images/clockwork-icon.png">
-        <div class="menu">
-          <a class="item" href="/">
-            <i class="home icon"></i> Home
-          </a>
-      <% if(!currentUser){ %>
-              <a class="item" href="/login"><i class="sign in icon"></i> Login</a>
-          <div class="divider"></div>
-              <a class="item" href="/register"><i class="add user icon"></i> Sign-in</a>
-      <% }else{ %>
-              <a class="item"><i class="star icon"></i>Hi <%=currentUser.username%></a>
-          <div class="divider"></div>
-              <a class="item" href="/logout"><i class="sign out icon"></i> Logout</a>
-      <% } %>
+      <div class="ui massive top attached inverted menu">
+        <div class="right menu">
+          <div class="ui dropdown icon item">
+            <img id="logo-i" src="/images/clockwork-icon.png">
+            <div class="menu m-menu">
+              <a class="item" href="/">
+                <i class="home icon"></i> Home
+              </a>
+          <% if(!currentUser){ %>
+                  <a class="item" href="/login"><i class="sign in icon"></i> Login</a>
+              <div class="divider"></div>
+                  <a class="item" href="/register"><i class="add user icon"></i> Sign-in</a>
+          <% }else{ %>
+                  <a class="item" href="/userprofile/<%=currentUser._id%>"><i class="star icon"></i>Hi <%=currentUser.username%></a>
+              <div class="divider"></div>
+                  <a class="item" href="/logout"><i class="sign out icon"></i> Logout</a>
+          <% } %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
         
-     <!--DESKTOP MENU BAR-->
+     <!--DESKTOP MENU BAR v1.1-->
      
     <div id="desktop-m" class="init-menu-class">
-      <div class="item">
-        <img src="/images/clockwork-icon.png">
+      <div class="ui top fixed inverted menu">
+        <div class="item">
+          <img src="/images/clockwork-icon.png">
+        </div>
+            <a class="item large ui black label" href="/">DevRoy</a>
+            <div class="right menu">
+                <% if(!currentUser){ %>
+                <a class="item large ui black label" href="/login"><i class="sign in icon"></i> Login</a>
+                <a class="item large ui green label" href="/register"><i class="add user icon"></i> Sign-in</a>
+                <% }else{ %>
+                <a class="item large ui black label" href="/logout"><i class="sign out icon"></i> Logout</a>
+                <a class="item large ui green label" href="/userprofile/<%=currentUser._id%>"><i class="star icon"></i>Hi <%=currentUser.username%></a>
+                <% } %>
+            </div>
       </div>
-          <a class="item" href="/">DevRoy</a>
-          <div class="right menu">
-              <% if(!currentUser){ %>
-              <a class="item ui black label" href="/login"><i class="sign in icon _head"></i> Login</a>
-              <a class="item ui green label" href="/register"><i class="add user icon _head"></i> Sign-in</a>
-              <% }else{ %>
-              <a class="item ui black label" href="/logout"><i class="sign out icon _head"></i> Logout</a>
-              <a class="item ui green label"><i class="star icon _head"></i>Hi <%=currentUser.username%></a>
-              <% } %>
-          </div>
     </div>
-    
+
+<!--SUCCESS & ERROR MESSAGES v1.1-->
+
     <div class="ui container">
-      <% if(error && error.length > 0){ %>
-      <div class="ui negative message">
-        <i class="close icon"></i>
-        <div class="header"><%= error%></div>
-      </div>
-      <% } else if (success && success.length > 0){ %>
-      <div class="ui positive message">
-        <i class="close icon"></i>
-        <div class="header"><%= success%></div>
-      </div>
-      <% } %>
+        <% if(error && error.length > 0){ %>
+        <div class="ui large negative floating message">
+          <i class="close icon"></i>
+          <div class="header"><%= error%></div>
+          <p><%= details%></p>
+        </div>
+        <% } else if (success && success.length > 0){ %>
+        <div class="ui large positive floating message">
+          <i class="close icon"></i>
+          <div class="header"><%= success%></div>
+        </div>
+        <% } %>
     </div>

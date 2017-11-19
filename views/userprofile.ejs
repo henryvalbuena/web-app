@@ -1,0 +1,112 @@
+<% include ../partials/header %>
+
+<div class="ui container userprofile">
+    <div class="ui two column grid">
+        <div class="column">
+            <div class="ui centered card">
+              <div class="image">
+                <i class="user icon x-large"></i>
+              </div>
+                <% var activeUser = ''; %>
+<% profile.forEach(function(profile){ %>
+                  <% if(profile.user.username == currentUser.username){ %>
+                  <% currentAbout= profile.about; activeUser= profile.user.username; activeId = profile._id %>
+              <div class="content">
+                    <a class="header"><%=currentUser.username%></a>
+                    <div class="meta">
+                      <span class="date">Joined in 2017</span>
+                    </div>
+                    <div class="description">
+                      <% if(profile.about){ %>
+                      <%= profile.about %>
+                      <% } %>
+                    </div>
+              </div>
+                  <div class="extra content">
+                      <% if(profile.favorite == "Todo"){ %>
+                      <a href="/todoapp">
+                        <i class="write square icon"></i>
+                      </a>
+                      <% }else if (profile.favorite == "Todo,Another"){ %>
+                      <a href="/another">
+                        <i class="puzzle icon"></i>
+                      </a>
+                      <a href="/todoapp">
+                      <i class="write square icon"></i>
+                      </a>
+                      <% } else if(profile.favorite == "Another"){ %>
+                        <a href="/another">
+                        <i class="puzzle icon"></i>
+                        </a>
+                    <% } %>
+                    <%=profile.user.username%>'s Fav Apps
+              </div>
+              <% } %>
+<% }); %>
+                    <!--WHEN THERE IS NO USER PROFILE-->
+
+               <% if(!(activeUser == currentUser.username)){ %>
+                 <div class="content">
+                       <a class="header"><%=currentUser.username%></a>
+                       <div class="meta">
+                         <span class="date">Joined in 2017</span>
+                       </div>
+                       <div class="description">
+                         Update your about to show it here
+                       </div>
+                 </div>
+                     <div class="extra content">
+                       Add favorite apps here
+                 </div>
+               <% } %>
+<!-- END OF CENTERED CARD -->
+           </div>
+<!-- END DIV COLUMN -->
+        </div>
+        
+<!--START FORM UPDATE USERPROFILE-->
+        <div class="column">
+          <% if(activeUser == currentUser.username){ %>
+            <form class="ui inverted form" action="/userprofile/<%=currentUser._id%>?_method=PUT" method="POST">
+              <div class="field">
+                <label>Favorite Apps</label>
+                <select id="multi-select" name="userdata[favorite]" class="ui fluid search dropdown" multiple="">
+                  <option value="">Select Apps</option>
+                  <option value="Todo">Todo</option>
+                  <option value="Another">Another</option>
+                  <option value="None">None</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>About</label>
+                <textarea rows="3" name="userdata[about]"><%=currentAbout%></textarea>
+              </div>
+              <input class="hidUserProfile" name="profileId" type='text' value='<%=activeId%>'>
+              <button class="ui positive button">Update</button>
+            </form>
+            
+            
+<!--START FORM SUBMIT USERPROFILE-->            
+            <% } else { %>
+            <form class="ui inverted form" action="/userprofile/<%=currentUser._id%>" method="POST">
+              <div class="field">
+                <label>Favorite Apps</label>
+                <select id="multi-select" name="favorite" class="ui fluid search dropdown" multiple="">
+                  <option value="">Select Apps</option>
+                  <option value="Todo">Todo</option>
+                  <option value="Another">Another</option>
+                  <option value="None">None</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>About</label>
+                <textarea rows="3" name="about"></textarea>
+              </div>
+              <button class="ui positive button">Submit</button>
+            </form>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>

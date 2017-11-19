@@ -1,18 +1,19 @@
 function checkOnStart() {
     $( "#mobile-m" ).removeClass().addClass('init-menu-class');
     $( "#desktop-m" ).removeClass().addClass('init-menu-class');
-    if( $( window ).width() <= 414){
+    if( $( window ).width() <= 736){
       $( "#mobile-m" ).removeClass().addClass('ui top fixed menu tiny inverted');
-    } else if($( window ).width() >= 414){
+    } else if($( window ).width() >= 736){
       $( "#desktop-m" ).removeClass().addClass('ui top fixed menu tiny inverted');
     }
+    $(".menu.m-menu").css('width', $( window ).width()+2);
 }
 
 checkOnStart();
 
 $('.ui.dropdown.icon.item')
    .dropdown({
-    on: 'hover'
+    on: 'click'
   });
 
 $( window ).resize(function() {
@@ -67,11 +68,20 @@ $('.ui.big.form')
       }
     }
  });
- $('.ui.message .close')
+$('.ui.message .close')
   .on('click', function() {
     $(this)
       .closest('.message')
       .transition('fade')
     ;
   })
+;
+$('.negative.floating.message')
+  .transition({
+    animation: 'shake',
+    duration: '1s'
+  })
+;
+$('#multi-select')
+  .dropdown()
 ;

@@ -24,7 +24,7 @@
                   <% for (var i=arrTodo.length-1; i>=0; i--){%>
                   <% if(arrTodo[i].user == currentUser.username) {%>
                         <form class="todo-form" action="/todoapp/<%=arrTodo[i]._id%>?_method=DELETE" method="POST">
-                          <div class="text done-check"><%=arrTodo[i].text%></div>
+                          <div class="text"><%=arrTodo[i].text%></div>
                           <div class="actions">
                             <span>Options:</span>
                             <button class="delete-todo" type="submit">

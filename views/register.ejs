@@ -5,15 +5,24 @@
     <form class="ui big form attached segment" action="/register" method="POST">
             <div class="field">
               <label>Username</label>
-              <input name="username" placeholder="Username" type="text">
+              <div class="ui left icon input">
+                <input name="username" type="text">
+                <i class="user icon"></i>
+              </div>
             </div>
             <div class="field">
               <label>Password</label>
-              <input name="password" placeholder="Password" type="password">
+              <div class="ui left icon input">
+                <input name="password" type="password">
+                <i class="lock icon"></i>
+              </div>
             </div>
             <div class="field">
               <label>Repeat Password</label>
-              <input name="match" placeholder="Repeat Password" type="password">
+              <div class="ui left icon input">
+                <input name="match" placeholder="Repeat Password" type="password">
+                <i class="lock icon"></i>
+              </div>
             </div>
           <button class="ui green submit huge fluid button">Sign Up</button>
         <div class="ui error message"></div>
