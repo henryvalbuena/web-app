@@ -10,6 +10,7 @@
 * Add reminder via email
 * About
 * Associate Todos to user
+* Change logo to 'settings'
 
 
 **Work mostly done (need to improve)**
@@ -29,5 +30,9 @@
 * Simple User Profile
 
 **Debuggin**
-*none
+*ui forms bottom margin
+* Web Chat App, group or pairs
+> Users online
+> Mobile View
+> Clear online users list
 
