@@ -7,6 +7,8 @@ var express                 =   require("express"),
     passportLocalMongoose   =   require("passport-local-mongoose"),
     dotenv                  =   require('dotenv').config(),
     flash                   =   require("connect-flash"),
+    http                    =   require('http').Server(app),
+    io                      =   require('socket.io')(http),
     methodOverride          =   require("method-override");
 
 
@@ -39,7 +41,7 @@ var todoSchema  = new mongoose.Schema({
 UserSchema.plugin(passportLocalMongoose); 
 var User        = mongoose.model('User', UserSchema);
 
-// console.log(User);
+
 app.use(flash());
 app.use(express.static(__dirname + "/public"));   
 app.set("view engine", "ejs");
@@ -107,7 +109,7 @@ app.get('/userprofile/:id', todoAppLoggedIn, function(req, res) {
     Profile.find({}, function(err, profile){
         if(err){
             req.flash('error', err.message);
-            res.redirect('/userprofile/'+req.use._id);
+            res.redirect('/userprofile/'+req.use.username);
         } else {
             res.render('userprofile', {profile});
         }
@@ -125,10 +127,10 @@ app.post('/userprofile/:id', todoAppLoggedIn, function(req, res) {
         Profile.create(userProfile, function(err, userPro){
             if(err){
             req.flash('error', err.message);
-            res.redirect('/userprofile/'+req.user._id);
+            res.redirect('/userprofile/'+req.user.username);
             } else {
                 req.flash('success', "Profile updated");
-                res.redirect('/userprofile/'+req.user._id);
+                res.redirect('/userprofile/'+req.user.username);
             }
         });
 });
@@ -140,9 +142,9 @@ app.put('/userprofile/:id', todoAppLoggedIn, function(req, res){
     Profile.findByIdAndUpdate(req.body.profileId, req.body.userdata, function(err, update){
         if(err){
             req.flash('error', err.message);
-            res.redirect('/userprofile/'+req.user._id);
+            res.redirect('/userprofile/'+req.user.username);
         } else {
-            res.redirect('/userprofile/'+req.user._id);
+            res.redirect('/userprofile/'+req.user.username);
         }
     });
 });
@@ -186,14 +188,62 @@ app.delete('/todoapp/:id', todoAppLoggedIn, function(req, res){
     });
 });
 
+
+
+app.get('/webchat', function(req, res) {
+    res.render('webchat');
+    // onlineUser = req.user.username;
+});
+
 app.get('/another', function(req, res) {
     res.send("In Development % Beep Beep Pop Pop %");
 });
 
 // DEFAULT ROUTE
+
 app.get('*', function(req, res) {
     res.send('404 Not Found');
 });
+
+
+// CHAT JS
+// var onlineUser = 'Roy';
+io.on('connection', function(socket){
+    console.log('a user has connected');
+    // console.log(socket.conn.id); 
+    console.log('****' + socket.id + "****");
+    socket.on('disconnect', function(){
+        console.log('a user has disconnected');
+        console.log('****' + socket.id + "****");
+    });
+});
+
+var objOnline = [];
+// var userChat = {};
+// var userPlusMsg = '';
+
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg, name){
+    //  console.info("ID: " + socket.id);
+    //  userPlusMsg = userChat[socket.id] + ": " + msg;
+    //  console.info("full message: " + userPlusMsg);
+      io.emit('chat message', msg, name);
+    //   io.emit('chat message', onlineUser);
+    //   io.emit('online user', onlineUser);
+    console.log('message: ' + msg + " name: " + name);
+  });
+    socket.on('onlineUser', function(name){
+        objOnline.push(name);
+        // console.log("ID: "+socket.id);
+        // userChat[socket.id]=name;
+        // console.log("objOnline: "+objOnline);
+        io.emit('onlineUser', objOnline);
+    });
+});
+
+ 
+
+// MIDDLEWARE
 
 function todoAppLoggedIn (req, res, next){
     if(req.isAuthenticated()){
@@ -205,6 +255,7 @@ function todoAppLoggedIn (req, res, next){
     }
 }
 
-app.listen(process.env.PORT, process.env.IP, function(){
+
+http.listen(process.env.PORT, process.env.IP, function(){
     console.log("Server started...");
 });

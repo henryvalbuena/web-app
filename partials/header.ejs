@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>DevRoy</title>
-        <meta property="og:title" content="DevRoy" />
+        <title>DevHenry</title>
+        <meta property="og:title" content="DevHenry" />
         <meta property="og:type" content="apps" />
         <meta property="og:image" content="/images/clockwork-icon.png" />
         <meta property="og:url" content="https://henryvalbuena.herokuapp.com/" />
@@ -35,7 +35,7 @@
               <div class="divider"></div>
                   <a class="item" href="/register"><i class="add user icon"></i> Sign-in</a>
           <% }else{ %>
-                  <a class="item" href="/userprofile/<%=currentUser._id%>"><i class="star icon"></i>Hi <%=currentUser.username%></a>
+                  <a class="item" href="/userprofile/<%=currentUser.username%>"><i class="star icon"></i>Hi <%=currentUser.username%></a>
               <div class="divider"></div>
                   <a class="item" href="/logout"><i class="sign out icon"></i> Logout</a>
           <% } %>
@@ -52,7 +52,7 @@
         <div class="item">
           <img src="/images/clockwork-icon.png">
         </div>
-            <a class="item large ui black label" href="/">DevRoy</a>
+            <a class="item large ui black label" href="/">DevHenry</a>
             <div class="right menu">
                 <% if(!currentUser){ %>
                 <a class="item large ui black label" href="/login"><i class="sign in icon"></i> Login</a>

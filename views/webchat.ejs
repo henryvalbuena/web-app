@@ -1,0 +1,51 @@
+<% include ../partials/header %>
+
+<div class="ui container messages">
+    
+    <div class="ui segments">
+        <div class="ui grid">
+                <div class="ui ten wide column chat">
+                    <div class="ui top attached inverted segment">
+                        <h2 class="ui inverted center aligned header">
+                            <div class="content">
+                            <i class="chat icon"></i>Chat
+                            </div>
+                        </h2>
+                    </div>
+                    <ul id="messages"></ul>
+                </div>
+                <div class="ui six wide column chat">
+                    <div class="ui top attached inverted segment">
+                        <h2 class="ui inverted center aligned header">
+                            <div class="content">
+                            <i class="users icon"></i>Online Users
+                            </div>
+                        </h2>
+                    </div>
+                    <ul id="users"></ul>
+                </div>
+        </div>
+    </div> 
+    <div class="ui bottom attached segment">
+        <form class="ui form" id="chat-form">
+            <div class="ui fluid action input">
+                <input id="m" type="text" placeholder="Message" autocomplete="off">
+                <button class="ui blue button">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="ui mini basic modal">
+  <div class="header">
+    For better experience, please insert username or nickname
+  </div>
+    <div class="ui fluid input">
+        <input id="chat-name" type="text" placeholder="name">
+    </div>
+    <div class="actions">
+        <button id="chat-name-add" class="ui approve close basic blue inverted button">Add</button>
+    </div>
+</div>
+
+<% include ../partials/footer %>

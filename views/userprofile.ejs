@@ -11,8 +11,8 @@
                   <% if(profile.user.username == currentUser.username){ %>
                   <% currentAbout= profile.about; activeUser= profile.user.username; activeId = profile._id %>
               <div class="content">
-                    <span class="right floated" data-tooltip="Edit">
-                    <i class="edit large icon"></i>
+                    <span class="right floated" data-tooltip="Click to Edit">
+                    <i class="info circle large icon"></i>
                     </span>
                     <a class="header"><%=currentUser.username%></a>
                     <div class="meta">
@@ -29,12 +29,28 @@
                       <a href="/todoapp">
                         <i class="write square icon"></i>
                       </a>
-                      <% }else if (profile.favorite == "Todo,Another"){ %>
+                      <% } else if (profile.favorite == "Todo,Another,WebChat"){ %>
                       <a href="/another">
                         <i class="puzzle icon"></i>
                       </a>
                       <a href="/todoapp">
                       <i class="write square icon"></i>
+                      </a>
+                      <a href="/webchat">
+                      <i class="talk icon"></i>
+                      </a>
+                      <% } else if (profile.favorite == "Todo,Another"){ %>
+                      <a href="/another">
+                        <i class="puzzle icon"></i>
+                      </a>
+                      <a href="/todoapp">
+                      <i class="write square icon"></i>
+                      </a><% } else if (profile.favorite == "Todo,WebChat"){ %>
+                      <a href="/another">
+                        <i class="puzzle icon"></i>
+                      </a>
+                      <a href="/webchat">
+                      <i class="talk icon"></i>
                       </a>
                       <% } else if(profile.favorite == "Another"){ %>
                         <a href="/another">
@@ -71,9 +87,8 @@
         
 <!--UPDATE FORM USERPROFILE-->
 
-<!--<span id="toggleHide" class="hide-edit">-->
         <div class="column">
-<span id="toggleHide" class="hide-edit">
+<span id="toggleHide">
           <% if(activeUser == currentUser.username){ %>
             <form class="ui inverted form" action="/userprofile/<%=currentUser._id%>?_method=PUT" method="POST">
               <div class="field">
@@ -82,6 +97,7 @@
                   <option value="">Select Apps</option>
                   <option value="Todo">Todo</option>
                   <option value="Another">Another</option>
+                  <option value="WebChat">Web Chat</option>
                   <option value="None">None</option>
                 </select>
               </div>

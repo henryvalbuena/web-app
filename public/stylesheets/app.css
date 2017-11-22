@@ -1,7 +1,7 @@
 body{
     background-color: #1B1C1D;
 }
-.init-menu-class, .hidUserProfile, .hide-edit{
+.init-menu-class, .hidUserProfile, #toggleHide{
     display: none;
 }
 .main.ui.container{
@@ -29,8 +29,8 @@ div .item img, .main.ui.container, .actions button{
 .todo-form{
     margin: 10px 0;
 }
-.ui.fluid.input{
-    margin-bottom: 40px;
+.ui.big.form{
+    /*margin-bottom: 40px;*/
 }
 .actions span{
     opacity: 0.3;
@@ -64,4 +64,22 @@ form.ui.form.attached.segment{
     font-size: 17em;
     line-height: 1;
     vertical-align: middle;
+}
+.chat{
+    height: 400px;
+    color: white;
+}
+.ui.container.messages{
+    border: 1px solid white;
+    margin-top: 100px;
+    border-radius: .28571429rem .28571429rem;
+}
+.ui.ten.wide.column{
+    padding-right: 0;
+    padding-top: 0;
+    margin-top: 14px;
+    border-right: 1px solid #555555;
+}
+.ui.six.wide.column{
+    padding-left: 0;
 }
