@@ -1,12 +1,19 @@
 
-var onlineUser = "";
+var onlineUser  = "",
+    uiState     = true;
+
 function checkOnStart() {
     $( "#mobile-m" ).removeClass().addClass('init-menu-class');
     $( "#desktop-m" ).removeClass().addClass('init-menu-class');
     if( $( window ).width() <= 736){
       $( "#mobile-m" ).removeClass().addClass('ui top fixed menu tiny inverted');
+      $('h2.ui.inverted.center.aligned.header').css('font-size', '0');
+      $('h2.ui.inverted.center.aligned.header div i').css('font-size', '1.7rem');
+      $('.chat-content').css('height', '250px');
     } else if($( window ).width() >= 736){
       $( "#desktop-m" ).removeClass().addClass('ui top fixed menu tiny inverted');
+      $('h2.ui.inverted.center.aligned.header').css('font-size', '1.7rem');
+      $('.chat-content').css('height', '400px');
     }
     $(".menu.m-menu").css('width', $( window ).width()+2);
 }
@@ -22,14 +29,14 @@ function users(arr){
 
 checkOnStart();
 
+$( window ).resize(function() {
+  checkOnStart();
+});
+
 $('.ui.dropdown.icon.item')
    .dropdown({
     on: 'click'
   });
-
-$( window ).resize(function() {
-  checkOnStart();
-});
  
 $('.delete-todo').popup({
   html: "<a class='ui red tag label'>Delete</a>",
@@ -96,7 +103,7 @@ $('.negative.floating.message')
 $('#multi-select')
   .dropdown()
 ;
-var uiState = true;
+
 $('div.content span:nth-child(1)').on('click', function(){
   $('#toggleHide').transition('fade', '0s');
    if(uiState){
@@ -109,6 +116,28 @@ $('div.content span:nth-child(1)').on('click', function(){
     uiState = true;
    }
 });
+
+$('.ui.modal')
+  .modal({
+    closable: false,
+  })
+  .modal('show')
+;
+
+// INFINITE SCROLL CHAT CONTENT
+
+// $('.chat-content')
+//   .visibility({
+//     once: false,
+//     // update size when new content loads
+//     observeChanges: true,
+//     // load content on bottom edge visible
+//     // onBottomVisible: function() {
+//     //   // loads a max of 5 times
+//     //   window.loadFakeContent();
+//     // }
+//   })
+// ;
 
 // MESSAGES IO
 
@@ -126,13 +155,6 @@ var socket = io();
     });
   });
   
-$('.ui.modal')
-  .modal({
-    closable: false,
-  })
-  .modal('show')
-;
-
 // USERS IO
 
 $(function () {

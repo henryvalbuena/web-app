@@ -29,6 +29,8 @@ div .item img, .main.ui.container, .actions button{
 .todo-form{
     margin: 10px 0;
 }
+
+/*NEED TO FIX THE FORMS FROM THE WEB*/
 .ui.big.form{
     /*margin-bottom: 40px;*/
 }
@@ -65,8 +67,7 @@ form.ui.form.attached.segment{
     line-height: 1;
     vertical-align: middle;
 }
-.chat{
-    height: 400px;
+.chat-content{
     color: white;
 }
 .ui.container.messages{

@@ -12,6 +12,10 @@ var express                 =   require("express"),
     methodOverride          =   require("method-override");
 
 
+var disconnectedId = [],
+    objOnline = [],
+    userChat = {};
+
 
 
 var todoSchema  = new mongoose.Schema({
@@ -207,9 +211,6 @@ app.get('*', function(req, res) {
 
 
 // CHAT JS
-var disconnectedId = [];
-var objOnline = [];
-var userChat = {};
 
 io.on('connection', function(socket){
     console.log('a user has connected');
