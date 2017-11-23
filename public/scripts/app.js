@@ -12,12 +12,12 @@ function checkOnStart() {
 }
 
 function users(arr){
-      $('ul#users').children('li').remove();
-    if(arr){
-      arr.forEach(function(name){
-        $('#users').append($('<li>').text(name));
-      });
-    }
+  $('ul#users').children('li').remove();
+  if(arr){
+    arr.forEach(function(name){
+      $('#users').append($('<li>').text(name));
+    });
+  }
 }
 
 checkOnStart();
@@ -121,6 +121,7 @@ var socket = io();
     })
     ;
     socket.on('chat message', function(msg, name){
+      // console.log("Client ID: "+socket.id)
       $('#messages').append($('<li>').text(name+": "+msg));
     });
   });
@@ -141,6 +142,16 @@ var socket = io();
         socket.emit('onlineUser', $('#chat-name').val());
     });
     socket.on('onlineUser', function(objOnline){
+      users(objOnline);
+    });
+});
+
+// REMOVE OFFUSERS
+
+$(function () {
+var socket = io();
+    socket.on('offline user', function(objOnline){
+      // console.log(objOnline);
       users(objOnline);
     });
 });

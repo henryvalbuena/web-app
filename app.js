@@ -207,41 +207,47 @@ app.get('*', function(req, res) {
 
 
 // CHAT JS
-// var onlineUser = 'Roy';
+var disconnectedId = [];
+var objOnline = [];
+var userChat = {};
+
 io.on('connection', function(socket){
     console.log('a user has connected');
     // console.log(socket.conn.id); 
-    console.log('****' + socket.id + "****");
+    // console.log('****' + socket.id + "****");
     socket.on('disconnect', function(){
         console.log('a user has disconnected');
-        console.log('****' + socket.id + "****");
+        // console.log('****' + socket.id + "****");
+        disconnectedId.push(socket.id);
+        // console.log('disconnected ID: ' + disconnectedId);
+        removeUser();
+        io.emit('offline user', objOnline);
+            // console.log('emit to remove oUsers: ' + objOnline);
     });
 });
 
-var objOnline = [];
-// var userChat = {};
-// var userPlusMsg = '';
 
 io.on('connection', function(socket){
   socket.on('chat message', function(msg, name){
-    //  console.info("ID: " + socket.id);
-    //  userPlusMsg = userChat[socket.id] + ": " + msg;
-    //  console.info("full message: " + userPlusMsg);
+    //  console.info("Server ID: " + socket.id);
+     userChat[socket.id]=name;
+    //  console.info("***Server userChat***");
+    //  console.info(userChat);
+    //  console.info("Server full message: " + userPlusMsg);
       io.emit('chat message', msg, name);
-    //   io.emit('chat message', onlineUser);
-    //   io.emit('online user', onlineUser);
-    console.log('message: ' + msg + " name: " + name);
+    // console.log('message: ' + msg + " name: " + name);
   });
     socket.on('onlineUser', function(name){
         objOnline.push(name);
-        // console.log("ID: "+socket.id);
-        // userChat[socket.id]=name;
-        // console.log("objOnline: "+objOnline);
+        // console.log("Online ID: "+socket.id);
+        userChat[socket.id]=name;
+        // console.log("objOnline Saved: "+objOnline);
         io.emit('onlineUser', objOnline);
+        // console.log("**Online ID: "+socket.id);
     });
+    
 });
 
- 
 
 // MIDDLEWARE
 
@@ -255,6 +261,25 @@ function todoAppLoggedIn (req, res, next){
     }
 }
 
+            
+function removeUser(){
+    for(var i=disconnectedId.length-1; i>=0; i--){
+        if(userChat[disconnectedId[i]]){
+            // console.info("objOnline : "+objOnline);
+            // console.info("ID Found: "+disconnectedId[i]);
+            // console.info("Needs to remore : "+userChat[disconnectedId[i]]);
+            // console.info("INDEX : "+objOnline.indexOf(userChat[disconnectedId[i]]));
+            if(objOnline.indexOf(userChat[disconnectedId[i]]) != -1){
+            objOnline.splice(objOnline.indexOf(userChat[disconnectedId[i]]), 1);
+            }
+            delete userChat[disconnectedId[i]];
+            disconnectedId.splice(i, 1);
+            // console.info("objOnline: "+objOnline);
+            // console.info("userChar*****");
+            // console.info(userChat);
+        }
+    }
+}
 
 http.listen(process.env.PORT, process.env.IP, function(){
     console.log("Server started...");
