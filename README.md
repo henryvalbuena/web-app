@@ -11,6 +11,7 @@
 * About
 * Associate Todos to user
 * Change logo to 'settings'
+* garbage collection
 
 
 **Work mostly done (need to improve)**
@@ -28,11 +29,15 @@
 * Save into mongoDB / mLab 
 * Add and Remove
 * Simple User Profile
+* Webchat online users
+* Clear offline users list
 
 **Debuggin**
-*ui forms bottom margin
+
+* ui forms bottom margin
 * Web Chat App, group or pairs
-> Users online
+
 > Mobile View
-> Clear online users list
+
+
 
