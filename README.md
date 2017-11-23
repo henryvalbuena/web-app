@@ -36,8 +36,7 @@
 
 * ui forms bottom margin
 * Web Chat App, group or pairs
-
-> Mobile View
+* Mobile view
 
 
 

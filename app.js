@@ -241,7 +241,6 @@ io.on('connection', function(socket){
     socket.on('onlineUser', function(name){
         objOnline.push(name);
         // console.log("Online ID: "+socket.id);
-        userChat[socket.id]=name;
         // console.log("objOnline Saved: "+objOnline);
         io.emit('onlineUser', objOnline);
         // console.log("**Online ID: "+socket.id);
