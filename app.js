@@ -12,9 +12,9 @@ var express                 =   require("express"),
     methodOverride          =   require("method-override");
 
 
-var disconnectedId = [],
-    objOnline = [],
-    userChat = {};
+var disconnectedId  = [],
+    objOnline       = [],
+    userChat        = {};
 
 
 
@@ -210,44 +210,25 @@ app.get('*', function(req, res) {
 });
 
 
-// CHAT JS
+// SOCKET.IO
 
 io.on('connection', function(socket){
     console.log('a user has connected');
-    // console.log(socket.conn.id); 
-    // console.log('****' + socket.id + "****");
     socket.on('disconnect', function(){
         console.log('a user has disconnected');
-        // console.log('****' + socket.id + "****");
         disconnectedId.push(socket.id);
-        // console.log('disconnected ID: ' + disconnectedId);
         removeUser();
         io.emit('offline user', objOnline);
-            // console.log('emit to remove oUsers: ' + objOnline);
     });
-});
-
-
-io.on('connection', function(socket){
-  socket.on('chat message', function(msg, name){
-    //  console.info("Server ID: " + socket.id);
-     userChat[socket.id]=name;
-    //  console.info("***Server userChat***");
-    //  console.info(userChat);
-    //  console.info("Server full message: " + userPlusMsg);
-      io.emit('chat message', msg, name);
-    // console.log('message: ' + msg + " name: " + name);
+    socket.on('chat message', function(name, msg){
+        if(name && !msg) {
+            userChat[socket.id]=addUser(name);
+            io.emit('chat message', objOnline, null);
+        } else if (!name && msg) {
+            io.emit('chat message', userChat[socket.id], msg);
+        }
   });
-    socket.on('onlineUser', function(name){
-        objOnline.push(name);
-        // console.log("Online ID: "+socket.id);
-        // console.log("objOnline Saved: "+objOnline);
-        io.emit('onlineUser', objOnline);
-        // console.log("**Online ID: "+socket.id);
-    });
-    
 });
-
 
 // MIDDLEWARE
 
@@ -261,22 +242,27 @@ function todoAppLoggedIn (req, res, next){
     }
 }
 
+function addUser (name){
+    if(objOnline == ""){
+        objOnline.push(name);
+    } else {
+        if(objOnline.indexOf(name) != -1){
+            objOnline.push(name + Math.floor(Math.random()*5000));
+        } else {
+            objOnline.push(name);
+        }
+    }
+    return objOnline[objOnline.length-1];
+}
             
 function removeUser(){
     for(var i=disconnectedId.length-1; i>=0; i--){
         if(userChat[disconnectedId[i]]){
-            // console.info("objOnline : "+objOnline);
-            // console.info("ID Found: "+disconnectedId[i]);
-            // console.info("Needs to remore : "+userChat[disconnectedId[i]]);
-            // console.info("INDEX : "+objOnline.indexOf(userChat[disconnectedId[i]]));
             if(objOnline.indexOf(userChat[disconnectedId[i]]) != -1){
             objOnline.splice(objOnline.indexOf(userChat[disconnectedId[i]]), 1);
             }
             delete userChat[disconnectedId[i]];
             disconnectedId.splice(i, 1);
-            // console.info("objOnline: "+objOnline);
-            // console.info("userChar*****");
-            // console.info(userChat);
         }
     }
 }

@@ -1,6 +1,5 @@
 
-var onlineUser  = "",
-    uiState     = true;
+var    uiState     = true;
 
 function checkOnStart() {
     $( "#mobile-m" ).removeClass().addClass('init-menu-class');
@@ -139,34 +138,28 @@ $('.ui.modal')
 //   })
 // ;
 
-// MESSAGES IO
-
-$(function () {
-var socket = io();
-    $('#chat-form').submit(function(){
-      socket.emit('chat message', $('#m').val(), onlineUser);
-      $('#m').val('');
-      return false;
-    })
-    ;
-    socket.on('chat message', function(msg, name){
-      // console.log("Client ID: "+socket.id)
-      $('#messages').append($('<li>').text(name+": "+msg));
-    });
-  });
-  
-// USERS IO
+// SOCKET.IO
 
 $(function () {
 var socket = io();
     $('#chat-name-add').on('click', function() {
-        onlineUser = $('#chat-name').val();
-        socket.emit('onlineUser', $('#chat-name').val());
+        // onlineUser = $('#chat-name').val();
+        socket.emit('chat message', $('#chat-name').val(), null);
     });
-    socket.on('onlineUser', function(objOnline){
-      users(objOnline);
+    $('#chat-form').submit(function(){
+      socket.emit('chat message', null, $('#m').val());
+      $('#m').val('');
+      return false;
+    });
+    socket.on('chat message', function(name, msg){
+      if(name && msg) {
+        $('#messages').append($('<li>').text(name+": "+msg));
+      } else if(name && !msg) {
+        users(name);
+      }
     });
 });
+
 
 // REMOVE OFFUSERS
 

@@ -3,6 +3,7 @@
 
 
 **Work in progres**
+
 * Edit todos
 * Mark done
 * Delete account
@@ -11,32 +12,35 @@
 * About
 * Associate Todos to user
 * Change logo to 'settings'
-* garbage collection
+* Garbage collection
+* Use socket to refresh and update data base without refreshing the page
 
 
 **Work mostly done (need to improve)**
+
 * Todo app 
 * Users 
     >Only save to users 
         >Show only users todos 
 * Style todo app
-* Correct menu bug
+* Mobile view
 
 **Complete**
+
 * Form validation 
 * Repeat password
 * Display: none both
 * Save into mongoDB / mLab 
 * Add and Remove
 * Simple User Profile
-* Webchat online users
-* Clear offline users list
+* Webchat online/offline users
+* Correct menu bug
+
 
 **Debuggin**
 
 * ui forms bottom margin
 * Web Chat App, group or pairs
-* Mobile view
 
 
 
