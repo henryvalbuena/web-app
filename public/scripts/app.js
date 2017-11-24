@@ -119,31 +119,17 @@ $('div.content span:nth-child(1)').on('click', function(){
 $('.ui.modal')
   .modal({
     closable: false,
+    approve: '.approve'
   })
   .modal('show')
 ;
 
-// INFINITE SCROLL CHAT CONTENT
-
-// $('.chat-content')
-//   .visibility({
-//     once: false,
-//     // update size when new content loads
-//     observeChanges: true,
-//     // load content on bottom edge visible
-//     // onBottomVisible: function() {
-//     //   // loads a max of 5 times
-//     //   window.loadFakeContent();
-//     // }
-//   })
-// ;
-
 // SOCKET.IO
+
 
 $(function () {
 var socket = io();
     $('#chat-name-add').on('click', function() {
-        // onlineUser = $('#chat-name').val();
         socket.emit('chat message', $('#chat-name').val(), null);
     });
     $('#chat-form').submit(function(){
@@ -154,19 +140,12 @@ var socket = io();
     socket.on('chat message', function(name, msg){
       if(name && msg) {
         $('#messages').append($('<li>').text(name+": "+msg));
+        $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
       } else if(name && !msg) {
         users(name);
       }
     });
-});
-
-
-// REMOVE OFFUSERS
-
-$(function () {
-var socket = io();
     socket.on('offline user', function(objOnline){
-      // console.log(objOnline);
       users(objOnline);
     });
 });

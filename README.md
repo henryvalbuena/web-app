@@ -14,6 +14,7 @@
 * Change logo to 'settings'
 * Garbage collection
 * Use socket to refresh and update data base without refreshing the page
+* Style webchat content [seding, receiving, typing]
 
 
 **Work mostly done (need to improve)**
@@ -24,6 +25,7 @@
         >Show only users todos 
 * Style todo app
 * Mobile view
+* Simple User Profile
 
 **Complete**
 
@@ -32,7 +34,6 @@
 * Display: none both
 * Save into mongoDB / mLab 
 * Add and Remove
-* Simple User Profile
 * Webchat online/offline users
 * Correct menu bug
 

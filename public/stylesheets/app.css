@@ -69,6 +69,7 @@ form.ui.form.attached.segment{
 }
 .chat-content{
     color: white;
+    overflow-y: auto;
 }
 .ui.container.messages{
     border: 1px solid white;

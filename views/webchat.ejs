@@ -36,23 +36,18 @@
                 <input id="m" type="text" placeholder="Message" autocomplete="off">
                 <button class="ui blue button">Send</button>
             </div>
-            <!--<div class="ui fluid action input">-->
-            <!--    <input id="chat-name" type="text" placeholder="name">-->
-            <!--    <button id="chat-name-add" class="ui blue button">Add</button>-->
-            <!--</div>-->
         </form>
     </div>
 </div>
 
 <div class="ui mini basic modal">
-  <div class="header">
-    For better experience, please insert username or nickname
-  </div>
-    <div class="ui fluid input">
-        <input id="chat-name" type="text" placeholder="name">
-    </div>
-    <div class="actions">
-        <button id="chat-name-add" class="ui approve close basic blue inverted button">Add</button>
+    <div class="content ui fluid input">
+        <div class="actions">
+            <form class="ui form" action="" onsubmit="return false;">
+                <input type="text" autocomplete="off" id="chat-name" placeholder="Name">
+                <button id="chat-name-add" class="ui blue button approve close" type="submit">Submit</button>
+            </form>
+        </div>
     </div>
 </div>
 
