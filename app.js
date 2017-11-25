@@ -12,9 +12,8 @@ var express                 =   require("express"),
     methodOverride          =   require("method-override");
 
 
-var disconnectedId  = [],
-    objOnline       = [],
-    userChat        = {};
+// var objOnline       = [],
+var    userChat        = {};
 
 
 
@@ -158,7 +157,7 @@ app.get('/todoapp', todoAppLoggedIn, function(req, res){
         if(err){
             req.flash('error', err.message);
             res.redirect('/todoapp');
-            console.log(err)
+            console.log(err);
         } else {
             res.render('todoapp', {arrTodo});
         }
@@ -216,16 +215,21 @@ io.on('connection', function(socket){
     console.log('a user has connected');
     socket.on('disconnect', function(){
         console.log('a user has disconnected');
-        disconnectedId.push(socket.id);
-        removeUser();
-        io.emit('offline user', objOnline);
+        removeUser(socket.id);
+        io.emit('offline user', Object.keys(userChat).map(function(key){return userChat[key]}));
     });
-    socket.on('chat message', function(name, msg){
+    socket.on('chat message', function(name, msg, status){
         if(name && !msg) {
             userChat[socket.id]=addUser(name);
-            io.emit('chat message', objOnline, null);
+            // console.log('User added: '+userChat[socket.id]);
+            // console.log('userObj: '+Object.keys(userChat).map(function(key){return userChat[key]}));
+            io.emit('chat message', Object.keys(userChat).map(function(key){return userChat[key]}));
         } else if (!name && msg) {
             io.emit('chat message', userChat[socket.id], msg);
+        } else if (status) {
+            console.log('Is typing: '+userChat[socket.id]);
+            // console.log('nameObj: '+Object.keys(userChat).map(function(key){return userChat[key]}));
+            io.emit('chat message', Object.keys(userChat).map(function(key){return userChat[key]}), null, userChat[socket.id]);
         }
   });
 });
@@ -243,27 +247,23 @@ function todoAppLoggedIn (req, res, next){
 }
 
 function addUser (name){
-    if(objOnline == ""){
-        objOnline.push(name);
-    } else {
-        if(objOnline.indexOf(name) != -1){
-            objOnline.push(name + Math.floor(Math.random()*5000));
+    var arr = Object.keys(userChat).map(function(key) {return userChat[key]});
+    // if(objOnline == ""){
+    //     objOnline.push(name);
+    // } else {
+        if(arr.indexOf(name) != -1){
+            arr.push(name + Math.floor(Math.random()*5000));
         } else {
-            objOnline.push(name);
+            arr.push(name);
         }
-    }
-    return objOnline[objOnline.length-1];
+    // }
+    return arr[arr.length-1];
 }
             
-function removeUser(){
-    for(var i=disconnectedId.length-1; i>=0; i--){
-        if(userChat[disconnectedId[i]]){
-            if(objOnline.indexOf(userChat[disconnectedId[i]]) != -1){
-            objOnline.splice(objOnline.indexOf(userChat[disconnectedId[i]]), 1);
-            }
-            delete userChat[disconnectedId[i]];
-            disconnectedId.splice(i, 1);
-        }
+function removeUser(id){
+    if(userChat[id]){
+        // objOnline.splice(objOnline.indexOf(userChat[id]), 1);
+        delete userChat[id];
     }
 }
 

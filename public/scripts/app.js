@@ -1,5 +1,7 @@
 
-var    uiState     = true;
+var uiState       = true,
+    clearTyping   = false,
+    objName       = [];
 
 function checkOnStart() {
     $( "#mobile-m" ).removeClass().addClass('init-menu-class');
@@ -17,12 +19,33 @@ function checkOnStart() {
     $(".menu.m-menu").css('width', $( window ).width()+2);
 }
 
-function users(arr){
+function time (){
+  console.log("time time")
+  clearTyping = true;
+  users(objName, true);
+}
+
+function users(arr, status){
   $('ul#users').children('li').remove();
-  if(arr){
+  if(arr && !status && !clearTyping){
     arr.forEach(function(name){
       $('#users').append($('<li>').text(name));
     });
+  } else if(arr && status && !clearTyping){
+      console.log("Is typing");
+      arr.forEach(function(name){
+        if(name == status) {
+          $('#users').append($('<li>').text(name+" is typing..."));
+        } else {
+          $('#users').append($('<li>').text(name));
+        }
+      });
+  } else if(arr && status && clearTyping){
+    console.log("Executing timer");
+    arr.forEach(function(name){
+      $('#users').append($('<li>').text(name));
+    });
+    clearTyping = false;
   }
 }
 
@@ -127,22 +150,38 @@ $('.ui.modal')
 // SOCKET.IO
 
 
+
 $(function () {
 var socket = io();
     $('#chat-name-add').on('click', function() {
-        socket.emit('chat message', $('#chat-name').val(), null);
+        socket.emit('chat message', $('#chat-name').val());
     });
     $('#chat-form').submit(function(){
       socket.emit('chat message', null, $('#m').val());
+      time();
       $('#m').val('');
       return false;
     });
-    socket.on('chat message', function(name, msg){
-      if(name && msg) {
+    $('#m').keypress(function(event){
+      // console.log("keypressed: "+event.charCode);
+      if(event.which != 13){
+      socket.emit('chat message', null, null, true);
+      }
+    });
+    socket.on('chat message', function(name, msg, status){
+      if(name && msg && !status) {
+        // console.log("if #1");
         $('#messages').append($('<li>').text(name+": "+msg));
         $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
-      } else if(name && !msg) {
-        users(name);
+      } else if(name && !msg && !status) {
+        // console.log("if #2");
+        users(name, null);
+      } else if(status){
+        console.log("Is typing: "+name);
+        objName = name;
+        setTimeout(time, 3000);
+        console.log("timer called");
+        users(name, status);
       }
     });
     socket.on('offline user', function(objOnline){

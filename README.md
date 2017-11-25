@@ -2,6 +2,17 @@
 # Herro! this is my app website.
 
 
+## Apps
+
+#### 1. Simple Todo List
+* Features
+    1. Add or remove saved in DB and associate to your account (need to be logged-in)
+
+#### 2. Webchat
+* Features
+    1. Online/offline users grid
+    2. No repeated usernames
+
 **Work in progres**
 
 * Edit todos
@@ -14,7 +25,7 @@
 * Change logo to 'settings'
 * Garbage collection
 * Use socket to refresh and update data base without refreshing the page
-* Style webchat content [seding, receiving, typing]
+* Features webchat content [seding, receiving, typing]
 
 
 **Work mostly done (need to improve)**
