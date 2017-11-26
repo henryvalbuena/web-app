@@ -216,20 +216,28 @@ io.on('connection', function(socket){
     socket.on('disconnect', function(){
         console.log('a user has disconnected');
         removeUser(socket.id);
-        io.emit('offline user', Object.keys(userChat).map(function(key){return userChat[key]}));
+        io.emit('offline user', Object.keys(userChat).map(function(key){return userChat[key][0]}));
     });
     socket.on('chat message', function(name, msg, status){
-        if(name && !msg) {
-            userChat[socket.id]=addUser(name);
+        // console.log(status);
+        if(name && !msg && !status) {
+            userChat[socket.id]=addUser(name, false);
             // console.log('User added: '+userChat[socket.id]);
-            // console.log('userObj: '+Object.keys(userChat).map(function(key){return userChat[key]}));
-            io.emit('chat message', Object.keys(userChat).map(function(key){return userChat[key]}));
-        } else if (!name && msg) {
-            io.emit('chat message', userChat[socket.id], msg);
+            // console.log('***userChar after***');
+            // console.info(userChat);
+            // console.log('userObj: '+Object.keys(userChat).map(function(key){return userChat[key][0]}));
+            io.emit('chat message', Object.keys(userChat).map(function(key){return userChat[key][0]}));
+        } else if (!name && msg && !status) {
+            io.emit('chat message', userChat[socket.id][0], msg);
         } else if (status) {
-            console.log('Is typing: '+userChat[socket.id]);
+            typingStatus(status);
+            // console.log(status);
+            // console.log('Is typing: '+userChat[socket.id][0]);
             // console.log('nameObj: '+Object.keys(userChat).map(function(key){return userChat[key]}));
-            io.emit('chat message', Object.keys(userChat).map(function(key){return userChat[key]}), null, userChat[socket.id]);
+            // console.log("arr to pass: "+[userChat[socket.id][0]], [userChat[socket.id][1]]);
+            io.emit('chat message', Object.keys(userChat).map(function(key){return userChat[key][0]}), 
+            null, [Object.keys(userChat).map(function(key){return userChat[key][0]}), 
+            Object.keys(userChat).map(function(key){return userChat[key][1]})]);
         }
   });
 });
@@ -246,23 +254,31 @@ function todoAppLoggedIn (req, res, next){
     }
 }
 
-function addUser (name){
+function addUser (name, stats){
     var arr = Object.keys(userChat).map(function(key) {return userChat[key]});
-    // if(objOnline == ""){
-    //     objOnline.push(name);
-    // } else {
         if(arr.indexOf(name) != -1){
             arr.push(name + Math.floor(Math.random()*5000));
         } else {
             arr.push(name);
         }
-    // }
-    return arr[arr.length-1];
+    arr.push(stats);
+    // console.log('****userChar****');
+    // console.info(arr);
+    return [arr[arr.length-2],arr[arr.length-1]];
+    // return arr[arr.length-1];
+}
+
+function typingStatus(status){
+    console.log('****userChar****');
+    console.log(status[0]+"*****"+status[1]);
+    console.log(userChat[status[0]][1]);
+    userChat[status[0]][1]=status[1];
 }
             
 function removeUser(id){
     if(userChat[id]){
         // objOnline.splice(objOnline.indexOf(userChat[id]), 1);
+        console.info(userChat[id]);
         delete userChat[id];
     }
 }

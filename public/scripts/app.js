@@ -19,33 +19,56 @@ function checkOnStart() {
     $(".menu.m-menu").css('width', $( window ).width()+2);
 }
 
-function time (){
-  console.log("time time")
-  clearTyping = true;
-  users(objName, true);
+function clearMe(socket, type){
+  clearTimeout(setTimeout(timer, 3000));
+  if(type){
+    setTimeout(timer, 3000);
+    console.log("Timer started");
+  } else {
+    console.log("Timer cancelled");
+    clearTimeout(setTimeout(timer, 3000));
+    return socket.emit('chat message', null, null, [socket.id, false]);
+  }
+  function timer (){
+      console.log("timer executed");
+      return socket.emit('chat message', null, null, [socket.id, false]);
+    }
+    return;
 }
+
 
 function users(arr, status){
   $('ul#users').children('li').remove();
-  if(arr && !status && !clearTyping){
+  if(arr && !status){
     arr.forEach(function(name){
       $('#users').append($('<li>').text(name));
     });
-  } else if(arr && status && !clearTyping){
-      console.log("Is typing");
-      arr.forEach(function(name){
-        if(name == status) {
-          $('#users').append($('<li>').text(name+" is typing..."));
-        } else {
-          $('#users').append($('<li>').text(name));
-        }
-      });
-  } else if(arr && status && clearTyping){
-    console.log("Executing timer");
+  // } else if(arr && status){
+  //     console.log("Is typing");
+  //     arr.forEach(function(name){
+  //       if(name == status) {
+  //         $('#users').append($('<li>').text(name+" is typing..."));
+  //       } else {
+  //         $('#users').append($('<li>').text(name));
+  //       }
+  //     });
+  // } else if(arr && status){
+  //   console.log("Executing timer");
+  //   arr.forEach(function(name){
+  //     $('#users').append($('<li>').text(name));
+  //   });
+  //   clearTyping = false;
+  } else if (arr && status) {
+    // console.log("*********");
+    // console.info(status);
     arr.forEach(function(name){
-      $('#users').append($('<li>').text(name));
+      if((status[0].indexOf(name) != -1) && (status[1][status[0].indexOf(name)])){
+        $('#users').append($('<li>').text(name+" is typing..."));
+        
+      } else {
+        $('#users').append($('<li>').text(name));
+      }
     });
-    clearTyping = false;
   }
 }
 
@@ -158,14 +181,19 @@ var socket = io();
     });
     $('#chat-form').submit(function(){
       socket.emit('chat message', null, $('#m').val());
-      time();
       $('#m').val('');
       return false;
     });
     $('#m').keypress(function(event){
       // console.log("keypressed: "+event.charCode);
       if(event.which != 13){
-      socket.emit('chat message', null, null, true);
+        socket.emit('chat message', null, null, [socket.id, true]);
+        console.log("timer cancelled");
+        clearMe(socket, true);
+        // console.log(clearMe());
+      } else {
+        // socket.emit('chat message', null, null, [socket.id, false]);
+        clearMe(socket, false);
       }
     });
     socket.on('chat message', function(name, msg, status){
@@ -177,14 +205,25 @@ var socket = io();
         // console.log("if #2");
         users(name, null);
       } else if(status){
-        console.log("Is typing: "+name);
-        objName = name;
-        setTimeout(time, 3000);
-        console.log("timer called");
+        // console.log("Is typing: "+name);
+        // console.info(status);
+        // objName = name;
+        // setTimeout(time, 3000);
+        // console.log("timer called");
         users(name, status);
       }
     });
+    // socket.on('typing timeoff', function(status) {
+        
+    // });
     socket.on('offline user', function(objOnline){
       users(objOnline);
     });
 });
+
+// function time (){
+//   console.log("time time time time time time");
+//   return $('#messages').append($('<li>').text(name+": Herro MOTO!!"));
+//   // clearTyping = true;
+//   // users(objName, true);
+// }

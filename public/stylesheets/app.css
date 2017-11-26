@@ -70,6 +70,7 @@ form.ui.form.attached.segment{
 .chat-content{
     color: white;
     overflow-y: auto;
+    font-size: 1.5em;
 }
 .ui.container.messages{
     border: 1px solid white;
