@@ -1,7 +1,8 @@
 
 var uiState       = true,
-    clearTyping   = false,
-    objName       = [];
+    type          = false,
+    userPane      = true,
+    timerStop     = 0;
 
 function checkOnStart() {
     $( "#mobile-m" ).removeClass().addClass('init-menu-class');
@@ -9,28 +10,26 @@ function checkOnStart() {
     if( $( window ).width() <= 736){
       $( "#mobile-m" ).removeClass().addClass('ui top fixed menu tiny inverted');
       $('h2.ui.inverted.center.aligned.header').css('font-size', '0');
-      $('h2.ui.inverted.center.aligned.header div i').css('font-size', '1.7rem');
+      $('h2.ui.inverted.center.aligned.header div i').css({'font-size': '1.7rem', 'padding-top': '10px'});
       $('.chat-content').css('height', '250px');
+      $('.chat-content').css('font-size', '1em');
     } else if($( window ).width() >= 736){
       $( "#desktop-m" ).removeClass().addClass('ui top fixed menu tiny inverted');
       $('h2.ui.inverted.center.aligned.header').css('font-size', '1.7rem');
       $('.chat-content').css('height', '400px');
+      $('.chat-content').css('font-size', '1.5em');
     }
     $(".menu.m-menu").css('width', $( window ).width()+2);
 }
 
-function clearMe(socket, type){
-  clearTimeout(setTimeout(timer, 3000));
-  if(type){
-    setTimeout(timer, 3000);
-    console.log("Timer started");
-  } else {
-    console.log("Timer cancelled");
-    clearTimeout(setTimeout(timer, 3000));
-    return socket.emit('chat message', null, null, [socket.id, false]);
+function clearMe(socket){
+  if(!type){
+    type = true;
+    timerStop = setTimeout(timer, 5000);
   }
   function timer (){
-      console.log("timer executed");
+      type = false;
+      timerStop = 0;
       return socket.emit('chat message', null, null, [socket.id, false]);
     }
     return;
@@ -41,32 +40,15 @@ function users(arr, status){
   $('ul#users').children('li').remove();
   if(arr && !status){
     arr.forEach(function(name){
-      $('#users').append($('<li>').text(name));
+      $('#users').append($('<li><i class="checkmark icon"></i>'+name+'</li>'));
     });
-  // } else if(arr && status){
-  //     console.log("Is typing");
-  //     arr.forEach(function(name){
-  //       if(name == status) {
-  //         $('#users').append($('<li>').text(name+" is typing..."));
-  //       } else {
-  //         $('#users').append($('<li>').text(name));
-  //       }
-  //     });
-  // } else if(arr && status){
-  //   console.log("Executing timer");
-  //   arr.forEach(function(name){
-  //     $('#users').append($('<li>').text(name));
-  //   });
-  //   clearTyping = false;
   } else if (arr && status) {
-    // console.log("*********");
-    // console.info(status);
     arr.forEach(function(name){
       if((status[0].indexOf(name) != -1) && (status[1][status[0].indexOf(name)])){
-        $('#users').append($('<li>').text(name+" is typing..."));
-        
+        // $('#users').append($('<li>').text(name+" is typing..."));
+        $('#users').append($('<li><i class="checkmark icon"></i>'+name+' <i class="spinner loading icon"></i></li>'));
       } else {
-        $('#users').append($('<li>').text(name));
+        $('#users').append($('<li><i class="checkmark icon"></i>'+name+'</li>'));
       }
     });
   }
@@ -88,6 +70,24 @@ $('.delete-todo').popup({
   position: 'right center',
   variation: 'basic',
   inline: true
+});
+
+$('.show-users').popup({
+  content: " Show online users ",
+  variation: 'inverted'
+});
+
+$('.show-users').on('click', function() {
+    $('.ui.six.wide.column').fadeToggle();
+    if(userPane){
+      $('#chat-showHide').delay(380).queue(function(){
+        $(this).removeClass('ui ten wide column').addClass('ui sixteen wide column').dequeue();
+      });
+      userPane = false;
+  } else {
+    $('#chat-showHide').removeClass('ui sixteen wide column').addClass('ui ten wide column');
+    userPane = true;
+  }
 });
 
 $('.ui.big.form')
@@ -173,7 +173,6 @@ $('.ui.modal')
 // SOCKET.IO
 
 
-
 $(function () {
 var socket = io();
     $('#chat-name-add').on('click', function() {
@@ -185,45 +184,39 @@ var socket = io();
       return false;
     });
     $('#m').keypress(function(event){
-      // console.log("keypressed: "+event.charCode);
-      if(event.which != 13){
-        socket.emit('chat message', null, null, [socket.id, true]);
-        console.log("timer cancelled");
-        clearMe(socket, true);
-        // console.log(clearMe());
+      if(event.which != 13 && socket.id){
+        if(timerStop == 0){
+          socket.emit('chat message', null, null, [socket.id, true]);
+        }
+        clearMe(socket);
       } else {
-        // socket.emit('chat message', null, null, [socket.id, false]);
-        clearMe(socket, false);
+        socket.emit('chat message', null, null, [socket.id, false]);
+        clearTimeout(timerStop);
+        timerStop = 0;
+        type = false;
       }
     });
-    socket.on('chat message', function(name, msg, status){
-      if(name && msg && !status) {
-        // console.log("if #1");
-        $('#messages').append($('<li>').text(name+": "+msg));
-        $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
+    socket.on('chat message', function(name, msg, status, sender){
+      if(name && msg && !status && sender) {
+        if(sender == socket.id){
+          $('#messages').append($('<li><i class="user icon"></i>'+name+'</li>'));
+          $('#messages').append($('<p>').text(msg));
+          $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
+        } else {
+          $('#messages').append($('<li style="text-align: right">'+name+' <i class="user outline icon"></i></li>'));
+          $('#messages').append($('<p>').text(msg));
+          $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
+        }
       } else if(name && !msg && !status) {
-        // console.log("if #2");
         users(name, null);
       } else if(status){
-        // console.log("Is typing: "+name);
-        // console.info(status);
-        // objName = name;
-        // setTimeout(time, 3000);
-        // console.log("timer called");
         users(name, status);
+      } else {
+        alert("Season has ended, page will reload...");
+        window.location.href = 'https://init-project-roydev.c9users.io/webchat';
       }
     });
-    // socket.on('typing timeoff', function(status) {
-        
-    // });
     socket.on('offline user', function(objOnline){
       users(objOnline);
     });
 });
-
-// function time (){
-//   console.log("time time time time time time");
-//   return $('#messages').append($('<li>').text(name+": Herro MOTO!!"));
-//   // clearTyping = true;
-//   // users(objName, true);
-// }

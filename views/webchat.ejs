@@ -4,11 +4,11 @@
     
     <div class="ui segments">
         <div class="ui grid">
-                <div class="ui ten wide column">
+                <div id="chat-showHide" class="ui ten wide column">
                     <div class="ui top attached inverted segment">
                         <h2 class="ui inverted center aligned header">
                             <div class="content">
-                            <i class="chat icon"></i>Chat
+                                <i class="chat icon"></i>Chat
                             </div>
                         </h2>
                     </div>
@@ -30,11 +30,12 @@
                 </div>
         </div>
     </div> 
-    <div class="ui bottom attached segment">
+    <div class="ui bottom inverted attached segment">
         <form class="ui form" id="chat-form">
             <div class="ui fluid action input">
                 <input id="m" type="text" placeholder="Message" autocomplete="off">
                 <button class="ui blue button">Send</button>
+                <span class="show-users"><i class="users icon"></i></span>
             </div>
         </form>
     </div>

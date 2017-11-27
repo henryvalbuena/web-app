@@ -218,26 +218,33 @@ io.on('connection', function(socket){
         removeUser(socket.id);
         io.emit('offline user', Object.keys(userChat).map(function(key){return userChat[key][0]}));
     });
-    socket.on('chat message', function(name, msg, status){
+    socket.on('chat message', function(name, msg, status, sender){
         // console.log(status);
         if(name && !msg && !status) {
             userChat[socket.id]=addUser(name, false);
             // console.log('User added: '+userChat[socket.id]);
             // console.log('***userChar after***');
-            // console.info(userChat);
+            console.info(userChat);
             // console.log('userObj: '+Object.keys(userChat).map(function(key){return userChat[key][0]}));
-            io.emit('chat message', Object.keys(userChat).map(function(key){return userChat[key][0]}));
+            io.emit('chat message', Object.keys(userChat).map(function(key){return userChat[key][0]}), null, null, socket.id);
         } else if (!name && msg && !status) {
-            io.emit('chat message', userChat[socket.id][0], msg);
+            if(userChat[socket.id]){
+                io.emit('chat message', userChat[socket.id][0], msg, null, socket.id);
+            }
         } else if (status) {
-            typingStatus(status);
+            console.log(status);
+            if(userChat[socket.id]){
+                userChat[status[0]][1]=status[1];
+            } else {
+                io.emit('chat message', null,null,null, null);
+            }
             // console.log(status);
             // console.log('Is typing: '+userChat[socket.id][0]);
             // console.log('nameObj: '+Object.keys(userChat).map(function(key){return userChat[key]}));
             // console.log("arr to pass: "+[userChat[socket.id][0]], [userChat[socket.id][1]]);
-            io.emit('chat message', Object.keys(userChat).map(function(key){return userChat[key][0]}), 
+            io.emit('chat message', Object.keys(userChat).map(function(key){return userChat[key][0]}),
             null, [Object.keys(userChat).map(function(key){return userChat[key][0]}), 
-            Object.keys(userChat).map(function(key){return userChat[key][1]})]);
+            Object.keys(userChat).map(function(key){return userChat[key][1]})], socket.id);
         }
   });
 });
@@ -255,30 +262,34 @@ function todoAppLoggedIn (req, res, next){
 }
 
 function addUser (name, stats){
-    var arr = Object.keys(userChat).map(function(key) {return userChat[key]});
-        if(arr.indexOf(name) != -1){
-            arr.push(name + Math.floor(Math.random()*5000));
+    var arrName = Object.keys(userChat).map(function(key) {return userChat[key][0]}),
+        arrStats = Object.keys(userChat).map(function(key) {return userChat[key][1]});
+        // console.log('****userChar****');
+        // console.info(Object.keys(userChat).map(function(key) {return userChat[key][0]}) + "***" + Object.keys(userChat).map(function(key) {return userChat[key][1]}));
+        if(arrName.indexOf(name) != -1){
+            arrName.push(name + Math.floor(Math.random()*5000));
         } else {
-            arr.push(name);
+            arrName.push(name);
         }
-    arr.push(stats);
+    arrStats.push(stats);
     // console.log('****userChar****');
-    // console.info(arr);
-    return [arr[arr.length-2],arr[arr.length-1]];
+    // console.info(arrName + arrStats);
+    // console.info([arrName[arrName.length-1],arrStats[arrStats.length-1]]);
+    return [arrName[arrName.length-1],arrStats[arrStats.length-1]];
     // return arr[arr.length-1];
 }
 
-function typingStatus(status){
-    console.log('****userChar****');
-    console.log(status[0]+"*****"+status[1]);
-    console.log(userChat[status[0]][1]);
-    userChat[status[0]][1]=status[1];
-}
+// function typingStatus(status){
+//     // console.log('****userChar****');
+//     // console.log(status[0]+"*****"+status[1]);
+//     // console.log(userChat[status[0]][1]);
+//     userChat[status[0]][1]=status[1];
+// }
             
 function removeUser(id){
     if(userChat[id]){
         // objOnline.splice(objOnline.indexOf(userChat[id]), 1);
-        console.info(userChat[id]);
+        // console.info(userChat[id]);
         delete userChat[id];
     }
 }

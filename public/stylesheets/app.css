@@ -72,17 +72,47 @@ form.ui.form.attached.segment{
     overflow-y: auto;
     font-size: 1.5em;
 }
+ul#messages, ul#users{
+    list-style-type: none;
+    padding-left: 0;
+}
+ul#messages li, ul#users li{
+    padding: 0 20px;
+    margin: 5px 0;
+    word-wrap: break-word;
+}
+ul#messages p{
+    padding: 0 10px;
+    margin: 0 10px;
+    word-spacing: 5px;
+    text-align: justify;
+    border: 1px solid gray;
+    border-radius: 20px;
+}
 .ui.container.messages{
-    border: 1px solid white;
-    margin-top: 100px;
+    /*border: 1px solid white;*/
+    padding-top: 100px;
     border-radius: .28571429rem .28571429rem;
+}
+.ui.ten.wide.column, .ui.six.wide.column{
+    padding-top: 0;
+    margin-top: 14px;
 }
 .ui.ten.wide.column{
     padding-right: 0;
-    padding-top: 0;
-    margin-top: 14px;
-    border-right: 1px solid #555555;
 }
 .ui.six.wide.column{
     padding-left: 0;
+    border-left: 1px solid #555555;
+}
+.showHide{
+    /*margin: 0 200px 0 100px;*/
+    float: right;
+}
+.floatLeft{
+    float: left;
+}
+.show-users{
+    color: white;
+    padding: 8px 0 0 10px;
 }
