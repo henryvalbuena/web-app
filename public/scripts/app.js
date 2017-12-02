@@ -4,6 +4,8 @@ var uiState       = true,
     userPane      = true,
     timerStop     = 0;
 
+checkOnStart();
+
 function checkOnStart() {
     $( "#mobile-m" ).removeClass().addClass('init-menu-class');
     $( "#desktop-m" ).removeClass().addClass('init-menu-class');
@@ -45,7 +47,6 @@ function users(arr, status){
   } else if (arr && status) {
     arr.forEach(function(name){
       if((status[0].indexOf(name) != -1) && (status[1][status[0].indexOf(name)])){
-        // $('#users').append($('<li>').text(name+" is typing..."));
         $('#users').append($('<li><i class="checkmark icon"></i>'+name+' <i class="spinner loading icon"></i></li>'));
       } else {
         $('#users').append($('<li><i class="checkmark icon"></i>'+name+'</li>'));
@@ -54,7 +55,6 @@ function users(arr, status){
   }
 }
 
-checkOnStart();
 
 $( window ).resize(function() {
   checkOnStart();
@@ -78,14 +78,21 @@ $('.show-users').popup({
 });
 
 $('.show-users').on('click', function() {
-    $('.ui.six.wide.column').fadeToggle();
+    $('.show-users').css('pointer-events', 'none');
+    $('.ui.five.wide.column').transition('slide left');
     if(userPane){
-      $('#chat-showHide').delay(380).queue(function(){
-        $(this).removeClass('ui ten wide column').addClass('ui sixteen wide column').dequeue();
+      $('#chat-showHide').delay(400).queue(function(){
+        $('.ui.five.wide.column').css('display', 'none');
+        $(this).removeClass('ui eleven wide column').addClass('ui sixteen wide column').dequeue();
+        $('.show-users').css('pointer-events', 'auto');
       });
       userPane = false;
   } else {
-    $('#chat-showHide').removeClass('ui sixteen wide column').addClass('ui ten wide column');
+    $('.ui.five.wide.column').css('display', 'block');
+    $('#chat-showHide').removeClass('ui sixteen wide column').addClass('ui eleven wide column');
+    $('.show-users').delay(400).queue(function(){
+      $(this).css('pointer-events', 'auto').dequeue();
+    });
     userPane = true;
   }
 });
@@ -131,6 +138,7 @@ $('.ui.big.form')
       }
     }
  });
+ 
 $('.ui.message .close')
   .on('click', function() {
     $(this)
@@ -179,8 +187,19 @@ var socket = io();
         socket.emit('chat message', $('#chat-name').val());
     });
     $('#chat-form').submit(function(){
-      socket.emit('chat message', null, $('#m').val());
+      var msg = [];
+      if($('#select-image').val()){
+        var selectedImage = $('#select-image').get(0).files[0];
+        selectedImage = window.URL.createObjectURL(selectedImage);
+        msg = [null, selectedImage];
+        console.log(selectedImage)
+        // $('#messages').append($('<img class="ui fuild image">').attr('src', selectedImage));
+      } else if($('#m').val()) {
+        msg = [$('#m').val(), null];
+      }
+      socket.emit('chat message', null, msg);
       $('#m').val('');
+      $('#select-image').val('');
       return false;
     });
     $('#m').keypress(function(event){
@@ -197,26 +216,37 @@ var socket = io();
       }
     });
     socket.on('chat message', function(name, msg, status, sender){
+      console.log(msg)
       if(name && msg && !status && sender) {
         if(sender == socket.id){
           $('#messages').append($('<li><i class="user icon"></i>'+name+'</li>'));
-          $('#messages').append($('<p>').text(msg));
-          $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
+          if(msg[0]) {$('#messages').append($('<p>').text(msg[0]));}
+          else if (msg[0] == null) {$('#messages').append($('<img class="ui fuild image">').attr('src', msg[1]));}
+          // $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
         } else {
           $('#messages').append($('<li style="text-align: right">'+name+' <i class="user outline icon"></i></li>'));
-          $('#messages').append($('<p>').text(msg));
-          $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
+          if(msg[0]) {$('#messages').append($('<p>').text(msg[0]));}
+          else if (msg[0] == null) {$('#messages').append($('<img class="ui fuild image">').attr('src', msg[1]));}
+          // $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
+          // console.log(msg[1])
         }
+        $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
       } else if(name && !msg && !status) {
         users(name, null);
+        $('.notifications').text(name[name.length-1]+" has come online").delay(3000).queue(function(){
+            $('.notifications').text("").dequeue();
+        });
       } else if(status){
         users(name, status);
       } else {
         alert("Season has ended, page will reload...");
-        window.location.href = 'https://init-project-roydev.c9users.io/webchat';
+        window.location.reload(false);
       }
     });
-    socket.on('offline user', function(objOnline){
-      users(objOnline);
-    });
+    socket.on('offline user', function(usersOnline, notification){
+      users(usersOnline);
+          $('.notifications').text(notification[0]+" disconnected").delay(3000).queue(function(){
+            $('.notifications').text("").dequeue();
+          });
+      });
 });

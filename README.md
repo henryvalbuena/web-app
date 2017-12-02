@@ -13,8 +13,12 @@
     1. Online/offline users grid
     2. No repeated usernames
 
+
+#### Status
+
 **Work in progres**
 
+* Clean up
 * Edit todos
 * Mark done
 * Delete account

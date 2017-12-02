@@ -1,7 +1,8 @@
 body{
     background-color: #1B1C1D;
+    color: white;
 }
-.init-menu-class, .hidUserProfile, #toggleHide{
+.init-menu-class, .hidUserProfile, #toggleHide, #select-image{
     display: none;
 }
 .main.ui.container{
@@ -68,7 +69,6 @@ form.ui.form.attached.segment{
     vertical-align: middle;
 }
 .chat-content{
-    color: white;
     overflow-y: auto;
     font-size: 1.5em;
 }
@@ -89,30 +89,30 @@ ul#messages p{
     border: 1px solid gray;
     border-radius: 20px;
 }
+/*ul#messages img{*/
+/*    width: inherit;*/
+/*}*/
 .ui.container.messages{
     /*border: 1px solid white;*/
     padding-top: 100px;
     border-radius: .28571429rem .28571429rem;
 }
-.ui.ten.wide.column, .ui.six.wide.column{
+.ui.eleven.wide.column, .ui.five.wide.column{
     padding-top: 0;
     margin-top: 14px;
 }
-.ui.ten.wide.column{
+.ui.eleven.wide.column{
     padding-right: 0;
 }
-.ui.six.wide.column{
+.ui.five.wide.column{
     padding-left: 0;
     border-left: 1px solid #555555;
 }
-.showHide{
-    /*margin: 0 200px 0 100px;*/
-    float: right;
-}
-.floatLeft{
-    float: left;
-}
 .show-users{
-    color: white;
     padding: 8px 0 0 10px;
+    color: white;
+}
+.notifications{
+    margin-left: 35%;
+    margin: 5px 0 5px 35%;
 }
