@@ -55,6 +55,10 @@ function users(arr, status){
   }
 }
 
+function showImg(img){
+  $('.show-image img').attr('src', img);
+  $('.show-image').modal('show');
+}
 
 $( window ).resize(function() {
   checkOnStart();
@@ -170,7 +174,7 @@ $('div.content span:nth-child(1)').on('click', function(){
    }
 });
 
-$('.ui.modal')
+$('.ui.basic.modal')
   .modal({
     closable: false,
     approve: '.approve'
@@ -221,14 +225,13 @@ var socket = io();
         if(sender == socket.id){
           $('#messages').append($('<li><i class="user icon"></i>'+name+'</li>'));
           if(msg[0]) {$('#messages').append($('<p>').text(msg[0]));}
-          else if (msg[0] == null) {$('#messages').append($('<img class="ui fuild image">').attr('src', msg[1]));}
-          // $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
+          else if (msg[0] == null) {$('#messages').append($('<img class="ui rounded medium image">').attr('src', msg[1])
+          .attr('onclick', 'showImg($(this).attr("src"));'));}
         } else {
           $('#messages').append($('<li style="text-align: right">'+name+' <i class="user outline icon"></i></li>'));
           if(msg[0]) {$('#messages').append($('<p>').text(msg[0]));}
-          else if (msg[0] == null) {$('#messages').append($('<img class="ui fuild image">').attr('src', msg[1]));}
-          // $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
-          // console.log(msg[1])
+          else if (msg[0] == null) {$('#messages').append($('<img class="ui rounded medium image">').attr('src', msg[1])
+          .attr('onclick', 'showImg($(this).attr("src"));'));}
         }
         $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
       } else if(name && !msg && !status) {

@@ -89,9 +89,9 @@ ul#messages p{
     border: 1px solid gray;
     border-radius: 20px;
 }
-/*ul#messages img{*/
-/*    width: inherit;*/
-/*}*/
+ul#messages img{
+    margin-left: 10px;
+}
 .ui.container.messages{
     /*border: 1px solid white;*/
     padding-top: 100px;
