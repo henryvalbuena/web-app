@@ -80,6 +80,7 @@ ul#messages li, ul#users li{
     padding: 0 20px;
     margin: 5px 0;
     word-wrap: break-word;
+    clear: right;
 }
 ul#messages p{
     padding: 0 10px;
@@ -87,11 +88,18 @@ ul#messages p{
     word-spacing: 5px;
     text-align: justify;
     border: 1px solid gray;
-    border-radius: 20px;
+    border-radius: 15px;
+    clear: right
 }
 ul#messages img{
     margin-left: 10px;
+    border: 1px solid gray;
+    height: 300px;
+    min-height: 200px;
 }
+/*.show-image img{*/
+/*    margin-left: 30%;*/
+/*}*/
 .ui.container.messages{
     /*border: 1px solid white;*/
     padding-top: 100px;

@@ -56,7 +56,7 @@ function users(arr, status){
 }
 
 function showImg(img){
-  $('.show-image img').attr('src', img);
+  $('.show-image img').attr('src', img)
   $('.show-image').modal('show');
 }
 
@@ -174,7 +174,7 @@ $('div.content span:nth-child(1)').on('click', function(){
    }
 });
 
-$('.ui.basic.modal')
+$('.nickname')
   .modal({
     closable: false,
     approve: '.approve'
@@ -196,8 +196,6 @@ var socket = io();
         var selectedImage = $('#select-image').get(0).files[0];
         selectedImage = window.URL.createObjectURL(selectedImage);
         msg = [null, selectedImage];
-        console.log(selectedImage)
-        // $('#messages').append($('<img class="ui fuild image">').attr('src', selectedImage));
       } else if($('#m').val()) {
         msg = [$('#m').val(), null];
       }
@@ -220,20 +218,25 @@ var socket = io();
       }
     });
     socket.on('chat message', function(name, msg, status, sender){
-      console.log(msg)
+      // console.log(msg)
       if(name && msg && !status && sender) {
         if(sender == socket.id){
           $('#messages').append($('<li><i class="user icon"></i>'+name+'</li>'));
           if(msg[0]) {$('#messages').append($('<p>').text(msg[0]));}
           else if (msg[0] == null) {$('#messages').append($('<img class="ui rounded medium image">').attr('src', msg[1])
+          // else if (msg[0] == null) {$('#messages').append($('<div class="ui rounded medium image"></div>').attr('background', 'url('+msg[1]+')')
           .attr('onclick', 'showImg($(this).attr("src"));'));}
         } else {
           $('#messages').append($('<li style="text-align: right">'+name+' <i class="user outline icon"></i></li>'));
-          if(msg[0]) {$('#messages').append($('<p>').text(msg[0]));}
-          else if (msg[0] == null) {$('#messages').append($('<img class="ui rounded medium image">').attr('src', msg[1])
+          if(msg[0]) {$('#messages').append($('<p style="text-align: right">').text(msg[0]));}
+          else if (msg[0] == null) {$('#messages').append($('<img class="ui rounded medium right floated image">').attr('src', msg[1])
           .attr('onclick', 'showImg($(this).attr("src"));'));}
         }
+        console.log($('.chat-content')[0].scrollTop)
+        console.log($('.chat-content')[0].scrollHeight)
         $('.chat-content')[0].scrollTop = $('.chat-content')[0].scrollHeight;
+        
+        console.log($('.chat-content')[0].scrollTop)
       } else if(name && !msg && !status) {
         users(name, null);
         $('.notifications').text(name[name.length-1]+" has come online").delay(3000).queue(function(){
